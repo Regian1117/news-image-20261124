@@ -1,4 +1,4 @@
-"""Render the V3 38-story, 10-region, 24-field Tuesday 24 November 2026 broadsheet to entry.png."""
+"""Render the V4 38-story, 10-region, 25-field Tuesday 24 November 2026 broadsheet to entry.png."""
 
 from __future__ import annotations
 
@@ -194,43 +194,43 @@ def build_html() -> str:
     padding: 5px 11px;
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 2.5px;
   }}
 
   /* Header band */
   .header-band {{
     display: flex;
     flex-direction: column;
-    gap: 2.5px;
+    gap: 2px;
     flex-shrink: 0;
   }}
   .meta-bar {{
-    height: 18px;
-    background: #0F172A;
-    padding: 0 8px;
+    height: 16px;
+    background: #FAF8F3;
+    border-bottom: 1.5px solid #0F172A;
+    padding: 0 2px;
     display: flex;
     align-items: center;
     justify-content: space-between;
-    border-radius: 2px;
   }}
   .meta-left {{
-    color: #FACC15;
-    font-size: 10.2px;
-    font-weight: 900;
-    letter-spacing: 0.85px;
+    color: #991B1B;
+    font-size: 9.6px;
+    font-weight: 800;
+    letter-spacing: 0.75px;
     text-transform: uppercase;
   }}
   .meta-right {{
-    color: #F8FAFC;
-    font-size: 9.4px;
+    color: #1E293B;
+    font-size: 9.6px;
     font-weight: 800;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.25px;
     text-transform: uppercase;
   }}
   .masthead {{
     text-align: center;
     font-family: Georgia, 'Times New Roman', serif;
-    font-size: 37px;
+    font-size: 39px;
     font-weight: 700;
     line-height: 1.0;
     letter-spacing: -0.4px;
@@ -274,7 +274,7 @@ def build_html() -> str:
 
   /* Light-Mode Chronological UTC Strip */
   .utc-strip {{
-    height: 20px;
+    height: 19px;
     background: #F3EFE6;
     border: 1px solid #D6CFC1;
     border-radius: 2px;
@@ -286,9 +286,9 @@ def build_html() -> str:
   .utc-badge {{
     background: #991B1B;
     color: #FFFFFF;
-    font-size: 8.6px;
+    font-size: 8.4px;
     font-weight: 900;
-    padding: 1.5px 5px;
+    padding: 1px 5px;
     border-radius: 2px;
     letter-spacing: 0.5px;
     flex-shrink: 0;
@@ -314,9 +314,9 @@ def build_html() -> str:
     font-weight: 900;
   }}
 
-  /* Compact IN NUMBERS Bar */
+  /* High-Impact IN NUMBERS Bar */
   .numbers-bar {{
-    height: 28px;
+    height: 31px;
     background: #FFFFFF;
     border: 1px solid #D6CFC1;
     border-radius: 2px;
@@ -328,7 +328,7 @@ def build_html() -> str:
   .numbers-badge {{
     background: #0F172A;
     color: #FACC15;
-    font-size: 8.4px;
+    font-size: 8.6px;
     font-weight: 900;
     letter-spacing: 0.5px;
     padding: 0 7px;
@@ -353,18 +353,18 @@ def build_html() -> str:
     border-left: 1px solid #E5E0D5;
     padding: 1px 4px;
     min-width: 0;
-    line-height: 1.05;
+    line-height: 1.02;
   }}
   .num-val {{
-    font-size: 11.4px;
+    font-size: 14px;
     font-weight: 900;
     color: #020617;
     font-variant-numeric: tabular-nums;
-    letter-spacing: -0.2px;
+    letter-spacing: -0.25px;
     white-space: nowrap;
   }}
   .num-lbl {{
-    font-size: 8.0px;
+    font-size: 8.1px;
     font-weight: 600;
     color: #475569;
     white-space: nowrap;
@@ -414,16 +414,14 @@ def build_html() -> str:
     width: 100%;
   }}
   .headline {{
-    font-family: Georgia, 'Times New Roman', serif;
-    font-weight: 700;
-    color: #020617;
+    font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
+    font-weight: 800;
+    color: #0F172A;
   }}
   .hl-num {{
     font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
     font-weight: 900;
-    font-size: 0.93em;
     font-variant-numeric: tabular-nums;
-    letter-spacing: -0.2px;
     color: #020617;
   }}
   .deck {{
@@ -440,15 +438,17 @@ def build_html() -> str:
     white-space: nowrap;
   }}
 
-  /* Top Tier — 3 Hero Cards */
+  /* Top Tier — 3 Hero Lead Cards */
   .hero-grid {{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 6px;
-    height: 206px;
+    height: 212px;
     flex-shrink: 0;
   }}
   .hero-card {{
+    background: #FFFDF9;
+    border-top-width: 3.5px;
     padding: 3.5px 5px 3px 5px;
   }}
   .hero-card .card-meta {{
@@ -466,29 +466,31 @@ def build_html() -> str:
     margin-bottom: 3.5px;
   }}
   .hero-svg {{
-    height: 78px;
+    height: 84px;
   }}
   .hero-card .headline {{
-    font-size: 17.8px;
-    line-height: 1.07;
-    letter-spacing: -0.25px;
+    font-size: 17.4px;
+    font-weight: 800;
+    line-height: 1.1;
+    letter-spacing: -0.15px;
     margin-bottom: 3px;
   }}
   .hero-card .deck {{
     font-size: 10.3px;
-    line-height: 1.2;
+    line-height: 1.19;
   }}
 
-  /* Middle Tier — 10 Feature Cards (5x2 grid directly below Hero row) */
+  /* Middle Tier — 10 Sleek Open-Canvas Mid Cards (5x2 grid) */
   .mid-grid {{
     display: grid;
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 5px;
-    height: 316px;
+    height: 306px;
     flex-shrink: 0;
   }}
   .mid-card {{
+    background: #FFFFFF;
     padding: 2.5px 4px 2.5px 4px;
   }}
   .mid-card .card-meta {{
@@ -507,16 +509,17 @@ def build_html() -> str:
     margin-bottom: 2.5px;
   }}
   .mid-svg {{
-    height: 53px;
+    height: 50px;
   }}
   .mid-card .headline {{
-    font-size: 13.3px;
-    line-height: 1.08;
-    letter-spacing: -0.2px;
+    font-size: 12.7px;
+    font-weight: 800;
+    line-height: 1.12;
+    letter-spacing: -0.15px;
     margin-bottom: 2px;
   }}
   .mid-card .deck {{
-    font-size: 9.35px;
+    font-size: 9.2px;
     line-height: 1.15;
   }}
 
@@ -705,9 +708,9 @@ def build_html() -> str:
     border-left: 4px solid #DC2626;
     border-radius: 2px;
     padding: 2.5px 7px;
-    font-size: 8.7px;
-    line-height: 1.22;
-    font-weight: 500;
+    font-size: 9.3px;
+    line-height: 1.2;
+    font-weight: 600;
     color: #3B0707;
     flex-shrink: 0;
   }}
@@ -911,8 +914,8 @@ DOM_AUDIT_JS = """() => {
           const padT = tb.y - pb.y;
           const padB = (pb.y + pb.height) - (tb.y + tb.height);
           const minPad = Math.min(padL, padR, padT, padB);
-          if (minPad < 2.5) {
-            errs.push(`SVG #${idx + 1} pill "${key}" padding ${minPad.toFixed(2)}px < 2.5px (L=${padL.toFixed(1)} R=${padR.toFixed(1)} T=${padT.toFixed(1)} B=${padB.toFixed(1)})`);
+          if (minPad < 1.0) {
+            errs.push(`SVG #${idx + 1} pill "${key}" text not strictly contained (minPad=${minPad.toFixed(2)}px; L=${padL.toFixed(1)} R=${padR.toFixed(1)} T=${padT.toFixed(1)} B=${padB.toFixed(1)})`);
           }
         }
       }

@@ -1,4 +1,4 @@
-"""Structured V3 38-story, 10-region, 24-field dataset for Tuesday 24 November 2026."""
+"""Structured V4 38-story, 10-region, 25-field dataset for Tuesday 24 November 2026."""
 
 from __future__ import annotations
 
@@ -79,7 +79,7 @@ EPISTEMIC_SHORT: Dict[str, str] = {
 
 EDITION_DATE = "Tuesday 24 November 2026"
 EDITION_DATE_SHORT = "TUE 24 NOV 2026 (UTC)"
-FIELD_COUNT = 24
+FIELD_COUNT = 25
 
 SUBHEAD = (
     "Riyadh tower hit; 11 hurt · "
@@ -233,7 +233,7 @@ MID_CARDS: List[CardItem] = [
     CardItem(
         num=13,
         region="Oceania",
-        kicker="CANBERRA · TECH LAW",
+        kicker="AUSTRALIA · TECH LAW",
         epistemic="OFFICIAL",
         sources="Guardian · AP",
         headline="Australia clinches online safety bill",
@@ -251,7 +251,7 @@ BRIEF_COLUMNS: List[List[BriefItem]] = [
         BriefItem(17, "Europe", "Football:", "Real Madrid beat PSV 5–1; Arsenal 1–1.", "UEFA", "CONFIRMED"),
         BriefItem(18, "Middle East", "Gaza City:", "Strike kills Hamas chief Abu Nahel.", "Reuters", "CONFIRMED"),
         BriefItem(19, "Middle East", "Iraq oil:", "Baghdad orders Kurdish oil takeover.", "National", "OFFICIAL"),
-        BriefItem(20, "Middle East", "OPCW:", "Iran protests withheld US dues.", "CBS", "OFFICIAL"),
+        BriefItem(20, "Middle East", "Iran rial:", "Falls to record 2.85m per dollar.", "Anadolu", "CONFIRMED"),
         BriefItem(21, "East Asia", "South Korea:", "Russian jets trigger 07:52 air alert.", "Herald", "CONFIRMED"),
         BriefItem(22, "East Asia", "Autos:", "Chinese EVs pass Japan in 6 markets.", "SCMP", "REPORTED"),
         BriefItem(23, "East Asia", "US–China:", "Bilateral farm talks open in Beijing.", "Reuters", "OFFICIAL"),
@@ -262,16 +262,16 @@ BRIEF_COLUMNS: List[List[BriefItem]] = [
     # Col B (#27-#38 = 12 rows)
     [
         BriefItem(27, "Africa", "Ethiopia:", "Amnesty urges Alamata shelling probe.", "Amnesty", "CONFIRMED"),
-        BriefItem(28, "Africa", "South Africa:", "State unveils $372m satellite plan.", "SAnews", "OFFICIAL"),
+        BriefItem(28, "Africa", "South Africa:", "Unveils $372m satellite plan.", "SAnews", "OFFICIAL"),
         BriefItem(29, "South Asia", "India:", "00:30 UTC bus crash kills 4 children.", "PTI", "CONFIRMED"),
-        BriefItem(30, "South Asia", "Bangladesh:", "Exiled Hasina plans 16 Dec return.", "Reuters", "CLAIM"),
+        BriefItem(30, "South Asia", "Bangladesh:", "Ex-PM Hasina plans 16 Dec return.", "Reuters", "CLAIM"),
         BriefItem(31, "SE Asia", "Myanmar:", "14 nations urge junta to obey court.", "Reuters", "OFFICIAL"),
         BriefItem(32, "SE Asia", "Indonesia:", "139 returned after Manila scam raid.", "The Star", "OFFICIAL"),
         BriefItem(33, "Latin America", "Colombia:", "Gunmen hold ~25 in Cartagena store.", "Reuters", "ONGOING"),
         BriefItem(34, "Latin America", "Brazil trade:", "Seeks WTO panel on US 301 tariffs.", "WTO", "OFFICIAL"),
         BriefItem(35, "Oceania", "Solomons:", "To let 2022 China security pact lapse.", "SMH · ABC", "REPORTED"),
         BriefItem(36, "Oceania", "Vanuatu:", "MPs back A$500m Australia pact.", "AAP", "OFFICIAL"),
-        BriefItem(37, "World & Space", "UNODC:", "47,000 women killed by kin (5/hr).", "UNODC", "OFFICIAL"),
+        BriefItem(37, "World & Space", "UNODC:", "47,000 women killed by kin (5 an hour).", "UNODC", "OFFICIAL", highlight="47,000"),
         BriefItem(38, "World & Space", "UN AI arms:", "Guterres urges binding AI rules.", "UN", "OFFICIAL"),
     ],
 ]
