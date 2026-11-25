@@ -1,4 +1,4 @@
-"""Render the 1024x1024 Tuesday 24 November 2026 world-news broadsheet to entry.png."""
+"""Render the 39-story Tuesday 24 November 2026 world-news broadsheet to entry.png."""
 
 from __future__ import annotations
 
@@ -21,6 +21,8 @@ from data import (
     FIELD_COUNT,
     FOOTER_SOURCES,
     HERO_CARDS,
+    KEY_NUMBERS,
+    MAP_PINS,
     MID_CARDS,
     REGION_COLORS,
     REGIONS,
@@ -30,13 +32,13 @@ from data import (
     CardItem,
     validate_dataset,
 )
-from svg_scenes import build_scenes
+from svg_scenes import build_scenes, build_world_map_svg
 
 REPO_DIR = Path(__file__).resolve().parent
 OUTPUT_PNG = REPO_DIR / "entry.png"
-MAX_PNG_BYTES = 275 * 1024
+MAX_PNG_BYTES = 270 * 1024
 
-NUM_ACRONYM_RE = re.compile(r"(\b\d[\d,\.%+–-]*\b|\b[A-Z]{2,}\b)")
+NUM_ACRONYM_RE = re.compile(r"(\$?\b\d[\d,\.%+–-]*(?:bn|m|k)?\b|\b[A-Z]{2,}\b)")
 
 
 def style_headline(text: str) -> str:
@@ -56,7 +58,10 @@ def format_date_check(text: str) -> str:
     marker = "Left out:"
     if marker in text:
         before, after = text.split(marker, 1)
-        return f'<span class="dc-lead">{escape(before)}</span><strong class="dc-excl">{marker}</strong>{escape(after)}'
+        return (
+            f'<span class="dc-lead">{escape(before)}</span>'
+            f'<strong class="dc-excl">{marker}</strong>{escape(after)}'
+        )
     return escape(text)
 
 
@@ -97,6 +102,7 @@ def render_brief_row(item: BriefItem) -> str:
 def build_html() -> str:
     total, counts = validate_dataset()
     scenes = build_scenes()
+    world_map_svg = build_world_map_svg(MAP_PINS)
 
     region_chips_html = "".join(
         f'<div class="reg-chip" style="background:{r.color};">'
@@ -111,6 +117,14 @@ def build_html() -> str:
         for t, lbl in TIMELINE_ANCHORS
     )
 
+    numbers_html = "".join(
+        f'<div class="num-cell">'
+        f'<span class="num-val">{escape(val)}</span>'
+        f'<span class="num-lbl">{escape(lbl)}</span>'
+        f'</div>'
+        for val, lbl in KEY_NUMBERS
+    )
+
     heroes_html = "".join(render_card(c, scenes, "hero") for c in HERO_CARDS)
     mids_html = "".join(render_card(c, scenes, "mid") for c in MID_CARDS)
 
@@ -119,18 +133,37 @@ def build_html() -> str:
         for col in BRIEF_COLUMNS
     )
 
+    pin_key_html = "".join(
+        f'<span class="pk-item">'
+        f'<span class="pk-num" style="background:{REGION_COLORS[p.region]};">{p.num}</span>'
+        f'<span class="pk-place">{escape(p.place)}</span>'
+        f'</span>'
+        for p in MAP_PINS
+    )
+
+    map_legend_html = "".join(
+        f'<span class="ml-item">'
+        f'<span class="ml-dot" style="background:{r.color};"></span>'
+        f'<span class="ml-name">{escape(r.key)}</span>'
+        f'<span class="ml-cnt">{counts[r.key]}</span>'
+        f'</span>'
+        for r in REGIONS
+    )
+
     legend_items = [
         ("CONFIRMED", "2+ outlets"),
         ("OFFICIAL", "on record"),
-        ("REPORTED", "single wire/local"),
-        ("CLAIM", "one side's word"),
+        ("REPORTED", "single wire"),
+        ("CLAIM", "one side"),
     ]
     legend_html = ' <span class="leg-dot">·</span> '.join(
         f'<span class="leg-item"><span class="leg-tag" style="background:{EPISTEMIC_COLORS[k]};">{k}</span> = {escape(v)}</span>'
         for k, v in legend_items
     )
 
-    meta_right = f"{total} DATED STORIES · {len(REGIONS)} REGIONS · {FIELD_COUNT} FIELDS · ALL FROM {EDITION_DATE_SHORT}"
+    meta_right = (
+        f"{total} DATED STORIES · {len(REGIONS)} REGIONS · {FIELD_COUNT} FIELDS · ALL FROM {EDITION_DATE_SHORT}"
+    )
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -157,20 +190,21 @@ def build_html() -> str:
     height: 1024px;
     overflow: hidden;
     background: #FAF8F3;
-    padding: 6px 12px;
+    padding: 5px 12px;
     display: flex;
     flex-direction: column;
-    gap: 4px;
+    gap: 3.5px;
   }}
 
   /* Header band */
   .header-band {{
     display: flex;
     flex-direction: column;
-    gap: 3px;
+    gap: 2.5px;
+    flex-shrink: 0;
   }}
   .meta-bar {{
-    height: 20px;
+    height: 18px;
     background: #0F172A;
     padding: 0 8px;
     display: flex;
@@ -180,14 +214,14 @@ def build_html() -> str:
   }}
   .meta-left {{
     color: #FACC15;
-    font-size: 10.6px;
+    font-size: 10.2px;
     font-weight: 900;
     letter-spacing: 0.85px;
     text-transform: uppercase;
   }}
   .meta-right {{
     color: #F8FAFC;
-    font-size: 9.6px;
+    font-size: 9.4px;
     font-weight: 800;
     letter-spacing: 0.35px;
     text-transform: uppercase;
@@ -195,26 +229,26 @@ def build_html() -> str:
   .masthead {{
     text-align: center;
     font-family: Georgia, 'Times New Roman', serif;
-    font-size: 42px;
+    font-size: 38px;
     font-weight: 700;
-    line-height: 1.02;
+    line-height: 1.0;
     letter-spacing: -0.4px;
-    color: #0F172A;
-    padding-top: 2px;
+    color: #020617;
+    padding-top: 1px;
   }}
   .subhead {{
     text-align: center;
-    font-size: 11.4px;
+    font-size: 11px;
     font-weight: 800;
     color: #991B1B;
-    line-height: 1.18;
-    letter-spacing: -0.18px;
+    line-height: 1.15;
+    letter-spacing: -0.1px;
     white-space: nowrap;
   }}
   .region-strip {{
     display: flex;
     gap: 3px;
-    height: 19px;
+    height: 17px;
   }}
   .reg-chip {{
     flex: 1;
@@ -222,36 +256,35 @@ def build_html() -> str:
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 4px;
+    gap: 3.5px;
     border-radius: 2px;
     color: #FFFFFF;
-    font-size: 8.3px;
+    font-size: 8.2px;
     font-weight: 800;
-    letter-spacing: 0.15px;
+    letter-spacing: 0.12px;
     white-space: nowrap;
   }}
   .reg-cnt {{
     background: rgba(15, 23, 42, 0.28);
-    padding: 0.5px 3.5px;
+    padding: 0.5px 3px;
     border-radius: 2px;
     font-weight: 900;
   }}
   .utc-ribbon {{
-    height: 20px;
+    height: 18px;
     background: #0F172A;
     padding: 0 7px;
     border-radius: 2px;
     display: flex;
     align-items: center;
-    justify-content: space-between;
     gap: 6px;
   }}
   .utc-badge {{
     background: #F59E0B;
     color: #0F172A;
-    font-size: 8.8px;
+    font-size: 8.4px;
     font-weight: 900;
-    padding: 1.5px 5px;
+    padding: 1px 4.5px;
     border-radius: 2px;
     letter-spacing: 0.5px;
     flex-shrink: 0;
@@ -261,18 +294,73 @@ def build_html() -> str:
     align-items: center;
     justify-content: space-between;
     flex: 1;
-    gap: 6px;
+    gap: 4px;
   }}
   .tl-item {{
     color: #E2E8F0;
-    font-size: 9.4px;
+    font-size: 9.0px;
     font-weight: 600;
     white-space: nowrap;
   }}
   .tl-time {{
     color: #FACC15;
     font-weight: 900;
-    margin-right: 2px;
+    margin-right: 1.5px;
+  }}
+
+  /* THE DAY IN NUMBERS bar */
+  .numbers-bar {{
+    height: 29px;
+    background: #FFFFFF;
+    border: 1px solid #D6CFC1;
+    border-radius: 2px;
+    display: flex;
+    align-items: stretch;
+    overflow: hidden;
+    flex-shrink: 0;
+  }}
+  .numbers-badge {{
+    background: #0F172A;
+    color: #FACC15;
+    font-size: 8.4px;
+    font-weight: 900;
+    letter-spacing: 0.5px;
+    padding: 0 7px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-transform: uppercase;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }}
+  .numbers-cells {{
+    flex: 1;
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    min-width: 0;
+  }}
+  .num-cell {{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-left: 1px solid #E5E0D5;
+    padding: 1px 4px;
+    min-width: 0;
+    line-height: 1.05;
+  }}
+  .num-val {{
+    font-size: 11.4px;
+    font-weight: 900;
+    color: #020617;
+    letter-spacing: -0.2px;
+    white-space: nowrap;
+  }}
+  .num-lbl {{
+    font-size: 8.0px;
+    font-weight: 600;
+    color: #475569;
+    white-space: nowrap;
   }}
 
   /* Shared card styling */
@@ -289,7 +377,7 @@ def build_html() -> str:
   .card-meta {{
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 3.5px;
     flex-shrink: 0;
   }}
   .num-badge {{
@@ -305,7 +393,7 @@ def build_html() -> str:
     color: #334155;
     font-weight: 800;
     text-transform: uppercase;
-    letter-spacing: 0.2px;
+    letter-spacing: 0.15px;
     white-space: nowrap;
     overflow: hidden;
     flex: 1;
@@ -315,7 +403,7 @@ def build_html() -> str:
     color: #FFFFFF;
     font-weight: 900;
     text-transform: uppercase;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.25px;
     border-radius: 2px;
     flex-shrink: 0;
   }}
@@ -348,7 +436,7 @@ def build_html() -> str:
     color: #64748B;
     font-weight: 600;
     border-top: 1px solid #ECE7DC;
-    padding-top: 2px;
+    padding-top: 1.5px;
     white-space: nowrap;
   }}
 
@@ -356,46 +444,46 @@ def build_html() -> str:
   .hero-grid {{
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    gap: 8px;
-    height: 210px;
+    gap: 7px;
+    height: 190px;
     flex-shrink: 0;
   }}
   .hero-card {{
-    padding: 5px 6px 4px 6px;
+    padding: 4px 6px 3.5px 6px;
   }}
   .hero-card .card-meta {{
-    height: 17px;
-    margin-bottom: 4px;
-  }}
-  .hero-card .num-badge {{
-    width: 17px;
-    height: 17px;
-    font-size: 10px;
-  }}
-  .hero-card .kicker {{
-    font-size: 8.8px;
-  }}
-  .hero-card .epi-badge {{
-    font-size: 7.8px;
-    padding: 1.5px 4px;
-  }}
-  .hero-card .scene-wrap {{
-    margin-bottom: 4px;
-  }}
-  .hero-svg {{
-    height: 78px;
-  }}
-  .hero-card .headline {{
-    font-size: 15.8px;
-    line-height: 1.11;
+    height: 16px;
     margin-bottom: 3px;
   }}
+  .hero-card .num-badge {{
+    width: 16px;
+    height: 16px;
+    font-size: 9.5px;
+  }}
+  .hero-card .kicker {{
+    font-size: 8.6px;
+  }}
+  .hero-card .epi-badge {{
+    font-size: 7.5px;
+    padding: 1px 3.8px;
+  }}
+  .hero-card .scene-wrap {{
+    margin-bottom: 3.5px;
+  }}
+  .hero-svg {{
+    height: 65px;
+  }}
+  .hero-card .headline {{
+    font-size: 15.0px;
+    line-height: 1.1;
+    margin-bottom: 2.5px;
+  }}
   .hero-card .deck {{
-    font-size: 11px;
-    line-height: 1.22;
+    font-size: 10.6px;
+    line-height: 1.2;
   }}
   .hero-card .card-src {{
-    font-size: 8.6px;
+    font-size: 8.3px;
   }}
 
   /* Section header */
@@ -404,107 +492,116 @@ def build_html() -> str:
     align-items: baseline;
     justify-content: space-between;
     border-bottom: 1.5px solid #0F172A;
-    padding-bottom: 1.5px;
+    padding-bottom: 1px;
     flex-shrink: 0;
   }}
   .sec-title {{
-    font-size: 10.8px;
+    font-size: 10.4px;
     font-weight: 900;
     letter-spacing: 0.6px;
     color: #0F172A;
     text-transform: uppercase;
   }}
   .sec-sub {{
-    font-size: 9.2px;
+    font-size: 9.0px;
     font-weight: 600;
     color: #475569;
   }}
 
-  /* Middle Tier — 8 Regional Feature Cards */
+  /* Middle Tier — 8 Feature Cards */
   .mid-grid {{
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(2, 1fr);
-    gap: 6px;
-    height: 340px;
+    gap: 5px;
+    height: 296px;
     flex-shrink: 0;
   }}
   .mid-card {{
-    padding: 4px 4px 3px 4px;
+    padding: 3.5px 4px 3px 4px;
   }}
   .mid-card .card-meta {{
-    height: 15px;
-    margin-bottom: 3px;
+    height: 14px;
+    margin-bottom: 2.5px;
     gap: 3px;
   }}
   .mid-card .num-badge {{
-    width: 15px;
-    height: 15px;
-    font-size: 8.8px;
+    width: 14px;
+    height: 14px;
+    font-size: 8.5px;
   }}
   .mid-card .kicker {{
-    font-size: 7.9px;
-    letter-spacing: 0.1px;
+    font-size: 7.8px;
+    letter-spacing: 0.08px;
   }}
   .mid-card .epi-badge {{
-    font-size: 7.2px;
-    padding: 1px 3.5px;
+    font-size: 7.0px;
+    padding: 1px 3.2px;
   }}
   .mid-card .scene-wrap {{
-    margin-bottom: 3px;
-  }}
-  .mid-svg {{
-    height: 52px;
-  }}
-  .mid-card .headline {{
-    font-size: 12.8px;
-    line-height: 1.12;
     margin-bottom: 2.5px;
   }}
+  .mid-svg {{
+    height: 46px;
+  }}
+  .mid-card .headline {{
+    font-size: 12.2px;
+    line-height: 1.1;
+    margin-bottom: 2px;
+  }}
   .mid-card .deck {{
-    font-size: 10.2px;
-    line-height: 1.19;
+    font-size: 9.8px;
+    line-height: 1.18;
   }}
   .mid-card .card-src {{
-    font-size: 8.2px;
+    font-size: 8.0px;
   }}
 
-  /* Lower Tier — 27 More Dated Stories */
-  .briefs-box {{
+  /* Lower Tier — 28 Briefs + World Locator Map */
+  .lower-grid {{
     flex: 1;
     min-height: 0;
+    display: grid;
+    grid-template-columns: 1fr 240px;
+    gap: 6px;
+  }}
+  .panel-box {{
     background: #FFFFFF;
     border: 1px solid #D6CFC1;
     border-top: 2.5px solid #0F172A;
     border-radius: 2px;
-    padding: 5px 7px 5px 7px;
+    padding: 4px 6.5px;
     display: flex;
     flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
   }}
-  .briefs-hdr {{
+  .panel-hdr {{
     display: flex;
     align-items: baseline;
     justify-content: space-between;
     border-bottom: 1px solid #E2DDD2;
-    padding-bottom: 3px;
-    margin-bottom: 4px;
+    padding-bottom: 2px;
+    margin-bottom: 3px;
     flex-shrink: 0;
   }}
-  .briefs-title {{
-    font-size: 10.2px;
+  .panel-title {{
+    font-size: 9.8px;
     font-weight: 900;
-    letter-spacing: 0.45px;
+    letter-spacing: 0.4px;
     color: #0F172A;
     text-transform: uppercase;
   }}
-  .briefs-sub {{
-    font-size: 8.8px;
-    font-weight: 600;
+  .panel-sub {{
+    font-size: 8.4px;
+    font-weight: 700;
     color: #475569;
   }}
+
+  /* Left Panel: 2 cols x 14 single-line rows */
   .briefs-cols {{
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
     gap: 6px;
     flex: 1;
     min-height: 0;
@@ -523,13 +620,13 @@ def build_html() -> str:
     display: flex;
     align-items: center;
     gap: 3.5px;
-    height: 17.8px;
+    height: 16.0px;
     line-height: 1;
-    font-size: 10.9px;
-    letter-spacing: -0.32px;
+    font-size: 10.2px;
+    letter-spacing: -0.12px;
     white-space: nowrap;
     overflow: hidden;
-    border-bottom: 1px dotted #E5E0D5;
+    border-bottom: 1px dotted #EAE5DA;
   }}
   .b-col .b-row:last-child {{
     border-bottom: none;
@@ -538,11 +635,11 @@ def build_html() -> str:
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 14.5px;
-    height: 14.5px;
+    width: 14px;
+    height: 13.5px;
     border-radius: 2px;
     color: #FFFFFF;
-    font-size: 8.2px;
+    font-size: 8.0px;
     font-weight: 900;
     letter-spacing: 0;
     flex-shrink: 0;
@@ -559,13 +656,90 @@ def build_html() -> str:
     display: inline-flex;
     align-items: center;
     color: #FFFFFF;
-    font-size: 7.4px;
+    font-size: 7.2px;
     font-weight: 900;
-    letter-spacing: 0.2px;
-    padding: 1.5px 3.5px;
+    padding: 1px 3px;
     border-radius: 2px;
     flex-shrink: 0;
-    margin-left: 1px;
+  }}
+
+  /* Right Panel: World Locator Map + Pin Key + Region Legend */
+  .map-panel {{
+    padding: 4px 5.5px;
+  }}
+  .world-map-wrap {{
+    line-height: 0;
+    flex-shrink: 0;
+    margin-bottom: 4px;
+  }}
+  .world-map-svg {{
+    width: 100%;
+    height: auto;
+    display: block;
+  }}
+  .pin-key {{
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2.5px 4px;
+    padding: 3.5px 0;
+    border-top: 1px solid #ECE7DC;
+    border-bottom: 1px solid #ECE7DC;
+    margin-bottom: 4px;
+    flex-shrink: 0;
+  }}
+  .pk-item {{
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 8.1px;
+    font-weight: 700;
+    color: #1E293B;
+    white-space: nowrap;
+    min-width: 0;
+  }}
+  .pk-num {{
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 12.5px;
+    height: 12.5px;
+    border-radius: 50%;
+    color: #FFFFFF;
+    font-size: 7.4px;
+    font-weight: 900;
+    flex-shrink: 0;
+  }}
+  .pk-place {{
+    overflow: hidden;
+  }}
+  .map-legend {{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2px 5px;
+    margin-top: auto;
+  }}
+  .ml-item {{
+    display: inline-flex;
+    align-items: center;
+    gap: 3px;
+    font-size: 7.9px;
+    font-weight: 700;
+    color: #334155;
+    white-space: nowrap;
+  }}
+  .ml-dot {{
+    width: 6.5px;
+    height: 6.5px;
+    border-radius: 50%;
+    flex-shrink: 0;
+  }}
+  .ml-name {{
+    flex: 1;
+    min-width: 0;
+  }}
+  .ml-cnt {{
+    color: #020617;
+    font-weight: 900;
   }}
 
   /* Exclusion Bar */
@@ -574,9 +748,9 @@ def build_html() -> str:
     border: 1.2px solid #DC2626;
     border-left: 4px solid #DC2626;
     border-radius: 2px;
-    padding: 3px 7px;
-    font-size: 9.0px;
-    line-height: 1.24;
+    padding: 2.5px 7px;
+    font-size: 8.7px;
+    line-height: 1.22;
     font-weight: 500;
     color: #3B0707;
     flex-shrink: 0;
@@ -585,10 +759,10 @@ def build_html() -> str:
     display: inline-block;
     background: #DC2626;
     color: #FFFFFF;
-    font-size: 8.0px;
+    font-size: 7.8px;
     font-weight: 900;
     letter-spacing: 0.4px;
-    padding: 1px 4.5px;
+    padding: 0.8px 4px;
     border-radius: 2px;
     margin-right: 5px;
     vertical-align: 0.5px;
@@ -607,29 +781,28 @@ def build_html() -> str:
     display: flex;
     align-items: center;
     justify-content: space-between;
-    font-size: 8.4px;
+    font-size: 8.2px;
     color: #475569;
-    padding-top: 1px;
     flex-shrink: 0;
   }}
   .leg-group {{
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 3.5px;
     white-space: nowrap;
   }}
   .leg-item {{
     display: inline-flex;
     align-items: center;
-    gap: 3px;
+    gap: 2.5px;
   }}
   .leg-tag {{
     color: #FFFFFF;
-    font-size: 7.3px;
+    font-size: 7.2px;
     font-weight: 900;
-    padding: 1px 3.5px;
+    padding: 0.8px 3.2px;
     border-radius: 2px;
-    letter-spacing: 0.25px;
+    letter-spacing: 0.2px;
   }}
   .leg-dot {{
     color: #94A3B8;
@@ -657,27 +830,44 @@ def build_html() -> str:
     </div>
   </header>
 
+  <section class="numbers-bar" aria-label="The day in numbers">
+    <div class="numbers-badge">IN NUMBERS</div>
+    <div class="numbers-cells">{numbers_html}</div>
+  </section>
+
   <section class="hero-grid" aria-label="Top stories">
     {heroes_html}
   </section>
 
   <div class="sec-hdr">
     <span class="sec-title">THE DAY IN 8 MORE</span>
-    <span class="sec-sub">Regional &amp; thematic highlights across 6 regions</span>
+    <span class="sec-sub">Courts, markets, space, climate, war &amp; tech across 6 regions</span>
   </div>
 
   <section class="mid-grid" aria-label="Regional highlights">
     {mids_html}
   </section>
 
-  <section class="briefs-box" aria-label="27 more dated stories">
-    <div class="briefs-hdr">
-      <span class="briefs-title">ALSO ON TUESDAY 24 NOVEMBER — 27 MORE DATED STORIES</span>
-      <span class="briefs-sub">9 regions matched by color · every item verified to Tue 24 Nov 2026</span>
+  <section class="lower-grid" aria-label="More dated stories and locator map">
+    <div class="panel-box briefs-panel">
+      <div class="panel-hdr">
+        <span class="panel-title">ALSO ON TUESDAY 24 NOVEMBER — 28 MORE DATED STORIES</span>
+        <span class="panel-sub">9 regions matched by color</span>
+      </div>
+      <div class="briefs-cols">
+        {briefs_cols_html}
+      </div>
     </div>
-    <div class="briefs-cols">
-      {briefs_cols_html}
-    </div>
+
+    <aside class="panel-box map-panel" aria-label="Where it happened">
+      <div class="panel-hdr">
+        <span class="panel-title">WHERE IT HAPPENED</span>
+        <span class="panel-sub">Pins 1–11</span>
+      </div>
+      <div class="world-map-wrap">{world_map_svg}</div>
+      <div class="pin-key">{pin_key_html}</div>
+      <div class="map-legend">{map_legend_html}</div>
+    </aside>
   </section>
 
   <aside class="date-check" aria-label="Date check">
@@ -715,12 +905,12 @@ DOM_AUDIT_JS = """() => {
     errs.push(`Page overflow: ${page.scrollWidth}x${page.scrollHeight}`);
   }
 
-  document.querySelectorAll('.hero-card, .mid-card').forEach((card, idx) => {
-    if (card.scrollHeight > card.clientHeight + 0.5) {
-      errs.push(`Card #${idx + 1} vertical overflow: scrollH=${card.scrollHeight} > clientH=${card.clientHeight}`);
+  document.querySelectorAll('.hero-card, .mid-card, .panel-box, .numbers-bar').forEach((el, idx) => {
+    if (el.scrollHeight > el.clientHeight + 0.5) {
+      errs.push(`Box #${idx + 1} (${el.className}) vertical overflow: scrollH=${el.scrollHeight} > clientH=${el.clientHeight}`);
     }
-    if (card.scrollWidth > card.clientWidth + 0.5) {
-      errs.push(`Card #${idx + 1} horizontal overflow: scrollW=${card.scrollWidth} > clientW=${card.clientWidth}`);
+    if (el.scrollWidth > el.clientWidth + 0.5) {
+      errs.push(`Box #${idx + 1} (${el.className}) horizontal overflow: scrollW=${el.scrollWidth} > clientW=${el.clientWidth}`);
     }
   });
 
@@ -740,8 +930,8 @@ DOM_AUDIT_JS = """() => {
   document.querySelectorAll('.b-row').forEach((row, idx) => {
     const rect = row.getBoundingClientRect();
     if (rect.height > maxRowH) maxRowH = rect.height;
-    if (rect.height > 20.0) {
-      errs.push(`Brief row #${idx + 1} height ${rect.height.toFixed(1)}px > 20px`);
+    if (rect.height > 18.0) {
+      errs.push(`Brief row #${idx + 1} height ${rect.height.toFixed(1)}px > 18px`);
     }
     if (row.scrollWidth > row.clientWidth + 0.5) {
       errs.push(`Brief row #${idx + 1} clipped: scrollW=${row.scrollWidth} > clientW=${row.clientWidth} (${row.textContent.trim()})`);
@@ -753,7 +943,7 @@ DOM_AUDIT_JS = """() => {
   document.querySelectorAll('svg.scene-svg').forEach((svg, idx) => {
     const vb = svg.viewBox.baseVal;
     const isHero = svg.classList.contains('hero-svg');
-    const artLimit = isHero ? 108.0 : 68.0;
+    const artLimit = isHero ? 104.0 : 64.0;
     const art = svg.querySelector('.scene-art');
     if (art) {
       const ab = art.getBBox();
@@ -784,12 +974,30 @@ DOM_AUDIT_JS = """() => {
     });
   });
 
+  const pins = Array.from(document.querySelectorAll('.map-pin')).map((el) => ({
+    num: Number(el.getAttribute('data-pin')),
+    x: Number(el.getAttribute('data-x')),
+    y: Number(el.getAttribute('data-y')),
+  }));
+  let minPinDist = Infinity;
+  for (let i = 0; i < pins.length; i++) {
+    for (let j = i + 1; j < pins.length; j++) {
+      const d = Math.hypot(pins[i].x - pins[j].x, pins[i].y - pins[j].y);
+      if (d < minPinDist) minPinDist = d;
+      if (d < 20.0) {
+        errs.push(`Map pins #${pins[i].num} & #${pins[j].num} distance ${d.toFixed(1)}px < 20px`);
+      }
+    }
+  }
+
   return {
     errs,
     docSize: [docEl.scrollWidth, docEl.scrollHeight],
     briefRows: document.querySelectorAll('.b-row').length,
     maxRowH: Number(maxRowH.toFixed(2)),
     maxRowRatio: Number(maxRowRatio.toFixed(3)),
+    pinCount: pins.length,
+    minPinDist: Number(minPinDist.toFixed(2)),
   };
 }"""
 
@@ -827,15 +1035,16 @@ def main() -> None:
     print(f"DOM errs={audit['errs']}")
     print(
         f"DOM stats: doc={audit['docSize']} brief_rows={audit['briefRows']} "
-        f"max_row_h={audit['maxRowH']}px max_row_ratio={audit['maxRowRatio']}"
+        f"max_row_h={audit['maxRowH']}px max_row_ratio={audit['maxRowRatio']} "
+        f"pins={audit['pinCount']} min_pin_dist={audit['minPinDist']}px"
     )
-    print(f"Output: {OUTPUT_PNG} ({size_bytes} bytes / {size_kib:.2f} KiB, cap 275 KiB)")
+    print(f"Output: {OUTPUT_PNG} ({size_bytes} bytes / {size_kib:.2f} KiB, cap 270 KiB)")
     print(f"Preview (300x300): {preview_png}")
 
     if audit["errs"]:
         raise SystemExit(f"DOM audit failed with {len(audit['errs'])} error(s)")
     if size_bytes > MAX_PNG_BYTES:
-        raise SystemExit(f"entry.png exceeds 275 KiB cap ({size_kib:.2f} KiB)")
+        raise SystemExit(f"entry.png exceeds 270 KiB cap ({size_kib:.2f} KiB)")
 
 
 if __name__ == "__main__":
