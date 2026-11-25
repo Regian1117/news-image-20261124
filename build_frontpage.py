@@ -63,15 +63,29 @@ def format_brief_body(body: str, highlight: str) -> str:
     return escape(body)
 
 
+PAREN_GROUP_RE = re.compile(r"(\([^)]+\))")
+
+
+def _wrap_parens(segment: str) -> str:
+    parts: List[str] = []
+    last = 0
+    for m in PAREN_GROUP_RE.finditer(segment):
+        parts.append(escape(segment[last : m.start()]))
+        parts.append(f'<span class="dc-paren">{escape(m.group(0))}</span>')
+        last = m.end()
+    parts.append(escape(segment[last:]))
+    return "".join(parts)
+
+
 def format_date_check(text: str) -> str:
     marker = "Left out:"
     if marker in text:
         before, after = text.split(marker, 1)
         return (
-            f'<span class="dc-lead">{escape(before)}</span>'
-            f'<strong class="dc-excl">{marker}</strong>{escape(after)}'
+            f'<span class="dc-lead">{_wrap_parens(before)}</span>'
+            f'<strong class="dc-excl">{marker}</strong>{_wrap_parens(after)}'
         )
-    return escape(text)
+    return _wrap_parens(text)
 
 
 def render_card(card: CardItem, scenes: Dict[int, str], tier: str) -> str:
@@ -113,7 +127,7 @@ def build_html() -> str:
     world_map_svg = build_world_map_svg(MAP_PINS)
 
     region_chips_html = "".join(
-        f'<div class="reg-chip" style="background:{r.color};">'
+        f'<div class="reg-chip r-chip" style="background:{r.color};">'
         f'<span class="reg-name">{escape(r.label)}</span>'
         f'<span class="reg-cnt">{counts[r.key]}</span>'
         f'</div>'
@@ -144,7 +158,7 @@ def build_html() -> str:
     map_legend_html = "".join(
         f'<div class="ml-item">'
         f'<span class="ml-dot" style="background:{r.color};"></span>'
-        f'<span class="ml-name">{escape(r.label)}</span>'
+        f'<span class="ml-name">{escape(r.key)}</span>'
         f'<span class="ml-cnt">{counts[r.key]}</span>'
         f'</div>'
         for r in REGIONS
@@ -248,25 +262,26 @@ def build_html() -> str:
   .region-strip {{
     display: flex;
     gap: 3px;
-    height: 17px;
+    height: 18px;
   }}
-  .reg-chip {{
+  .r-chip {{
     flex: 1;
     min-width: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 2.5px;
+    gap: 3px;
     border-radius: 2px;
     color: #FFFFFF;
-    font-size: 8.2px;
-    font-weight: 800;
-    letter-spacing: -0.12px;
+    font-size: 9.2px;
+    font-weight: 900;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.1px;
     white-space: nowrap;
   }}
   .reg-cnt {{
     background: rgba(15, 23, 42, 0.28);
-    padding: 0.5px 2.5px;
+    padding: 0.5px 3px;
     border-radius: 2px;
     font-weight: 900;
     font-variant-numeric: tabular-nums;
@@ -734,6 +749,9 @@ def build_html() -> str:
     color: #B91C1C;
     font-weight: 900;
   }}
+  .dc-paren {{
+    white-space: nowrap;
+  }}
 
   /* Footer bar */
   .footer-bar {{
@@ -858,12 +876,18 @@ DOM_AUDIT_JS = """() => {
     errs.push(`Page overflow: ${page.scrollWidth}x${page.scrollHeight}`);
   }
 
-  document.querySelectorAll('.hero-card, .mid-card, .panel-box, .numbers-bar, .utc-strip').forEach((el, idx) => {
+  document.querySelectorAll('.hero-card, .mid-card, .panel-box, .numbers-bar, .utc-strip, .date-check').forEach((el, idx) => {
     if (el.scrollHeight > el.clientHeight + 0.5) {
       errs.push(`Box #${idx + 1} (${el.className}) vertical overflow: scrollH=${el.scrollHeight} > clientH=${el.clientHeight}`);
     }
     if (el.scrollWidth > el.clientWidth + 0.5) {
       errs.push(`Box #${idx + 1} (${el.className}) horizontal overflow: scrollW=${el.scrollWidth} > clientW=${el.clientWidth}`);
+    }
+  });
+
+  document.querySelectorAll('.date-check .dc-paren').forEach((span) => {
+    if (span.getClientRects().length > 1) {
+      errs.push(`DATE CHECK parenthesis split across lines: "${span.textContent}"`);
     }
   });
 

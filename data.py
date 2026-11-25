@@ -54,9 +54,9 @@ REGIONS: List[RegionMeta] = [
     RegionMeta("Africa", "AFRICA", "#15803D", 4),
     RegionMeta("South Asia", "SOUTH ASIA", "#0F766E", 3),
     RegionMeta("SE Asia", "SE ASIA", "#0E7490", 3),
-    RegionMeta("Latin America", "LATIN AMERICA", "#9D174D", 3),
+    RegionMeta("LatAm", "LATAM", "#9D174D", 3),
     RegionMeta("Oceania", "OCEANIA", "#0369A1", 3),
-    RegionMeta("World & Space", "WORLD & SPACE", "#334155", 3),
+    RegionMeta("World", "WORLD", "#334155", 3),
 ]
 
 REGION_COLORS: Dict[str, str] = {r.key: r.color for r in REGIONS}
@@ -172,7 +172,7 @@ MID_CARDS: List[CardItem] = [
     ),
     CardItem(
         num=7,
-        region="World & Space",
+        region="World",
         kicker="KOUROU · SPACE",
         epistemic="CONFIRMED",
         sources="Arianespace · Xinhua",
@@ -222,7 +222,7 @@ MID_CARDS: List[CardItem] = [
     ),
     CardItem(
         num=12,
-        region="Latin America",
+        region="LatAm",
         kicker="BRAZIL · WEATHER",
         epistemic="OFFICIAL",
         sources="IOM · AP",
@@ -245,7 +245,7 @@ MID_CARDS: List[CardItem] = [
 BRIEF_COLUMNS: List[List[BriefItem]] = [
     # Col A (#14-#26 = 13 rows)
     [
-        BriefItem(14, "Europe", "England:", "Record 5,258 summer 2026 heat deaths.", "UKHSA", "OFFICIAL"),
+        BriefItem(14, "Europe", "England:", "Record 5,258 summer 2026 heat deaths.", "UKHSA", "OFFICIAL", highlight="5,258"),
         BriefItem(15, "Europe", "BYD France:", "Exclusive talks for Ineos EV plant.", "Reuters", "OFFICIAL"),
         BriefItem(16, "Europe", "UK defence:", "Agencies warn arms firms of sabotage.", "MoD", "OFFICIAL"),
         BriefItem(17, "Europe", "Football:", "Real Madrid beat PSV 5–1; Arsenal 1–1.", "UEFA", "CONFIRMED"),
@@ -267,12 +267,12 @@ BRIEF_COLUMNS: List[List[BriefItem]] = [
         BriefItem(30, "South Asia", "Bangladesh:", "Ex-PM Hasina plans 16 Dec return.", "Reuters", "CLAIM"),
         BriefItem(31, "SE Asia", "Myanmar:", "14 nations urge junta to obey court.", "Reuters", "OFFICIAL"),
         BriefItem(32, "SE Asia", "Indonesia:", "139 returned after Manila scam raid.", "The Star", "OFFICIAL"),
-        BriefItem(33, "Latin America", "Colombia:", "Gunmen hold ~25 in Cartagena store.", "Reuters", "ONGOING"),
-        BriefItem(34, "Latin America", "Brazil trade:", "Seeks WTO panel on US 301 tariffs.", "WTO", "OFFICIAL"),
+        BriefItem(33, "LatAm", "Colombia:", "Gunmen hold ~25 in Cartagena store.", "Reuters", "ONGOING"),
+        BriefItem(34, "LatAm", "Brazil trade:", "Seeks WTO panel on US 301 tariffs.", "WTO", "OFFICIAL"),
         BriefItem(35, "Oceania", "Solomons:", "To let 2022 China security pact lapse.", "SMH · ABC", "REPORTED"),
-        BriefItem(36, "Oceania", "Vanuatu:", "MPs back A$500m Australia pact.", "AAP", "OFFICIAL"),
-        BriefItem(37, "World & Space", "UNODC:", "47,000 women killed by kin (5 an hour).", "UNODC", "OFFICIAL", highlight="47,000"),
-        BriefItem(38, "World & Space", "UN AI arms:", "Guterres urges binding AI rules.", "UN", "OFFICIAL"),
+        BriefItem(36, "Oceania", "Vanuatu:", "Lawmakers back A$500m Australia pact.", "AAP", "OFFICIAL"),
+        BriefItem(37, "World", "UNODC:", "47,000 women killed by kin (5 an hour).", "UNODC", "OFFICIAL", highlight="47,000"),
+        BriefItem(38, "World", "UN AI arms:", "Guterres urges binding AI rules.", "UN", "OFFICIAL"),
     ],
 ]
 
@@ -283,20 +283,20 @@ MAP_PINS: List[MapPin] = [
     MapPin(4, "Europe", 209, 39),
     MapPin(5, "Europe", 175, 43),
     MapPin(6, "N. America", 73, 56),
-    MapPin(7, "World & Space", 115, 92),
+    MapPin(7, "World", 115, 92),
     MapPin(8, "Middle East", 242, 77),
     MapPin(9, "Africa", 193, 98),
     MapPin(10, "SE Asia", 290, 83),
     MapPin(11, "South Asia", 266, 70),
-    MapPin(12, "Latin America", 118, 136),
+    MapPin(12, "LatAm", 118, 136),
     MapPin(13, "Oceania", 316, 146),
 ]
 
 DATE_CHECK_TEXT = (
     "Every story happened or was first reported on Tue 24 Nov 2026 (UTC). "
-    "Left out: Iran Hormuz tanker mines claim, Nvidia reinstates Huang & "
-    "EU 22nd Russia sanctions (Mon 23 Nov) · COP31 ends without deal (Sun 22 Nov) · "
-    "Shenzhou-24 launch (due Wed 25 Nov)."
+    "Left out: Iran Hormuz mines claim, Nvidia reinstates Huang & "
+    "EU 22nd Russia sanctions (Mon 23 Nov) · COP31 no deal (Sun 22 Nov) · "
+    "Shenzhou-24 launch (Wed 25 Nov)."
 )
 
 FOOTER_RIGHT = "Original vector illustrations · every story names its sources"

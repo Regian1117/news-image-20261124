@@ -107,9 +107,9 @@ def build_scenes() -> Dict[int, str]:
         '<polygon points="146,16 149,22 156,20 152,27 159,31 151,33 153,40 146,34 140,39 142,32 134,29 141,25 140,18 144,22" fill="#DC2626"/>'
         '<polygon points="146,21 148,25 152,24 150,28 153,31 149,31 149,34 146,32 143,33 144,30 141,29 144,27 143,23 145,25" fill="#FACC15"/>'
         + _pill("p1", 196, 13, 108, 27, "#B91C1C", "11 HURT", "#FFFFFF", 13.4, rx=3.5, stroke="#7F1D1D", stroke_w=0.9)
-        + _pill("p2", 196, 46, 108, 26, "#FFFFFF", "2ND STRIKE", "#991B1B", 11.4, rx=3.0, stroke="#B91C1C", stroke_w=1.2)
+        + _pill("p2", 196, 46, 108, 26, "#FFFFFF", "HODEIDAH HIT", "#991B1B", 10.6, rx=3.0, stroke="#B91C1C", stroke_w=1.2)
     )
-    scenes[1] = _wrap_hero(1, card_regions[1], "#DCEEF9", "#B45309", body_1, "Riyadh strike 11 hurt, 2nd strike")
+    scenes[1] = _wrap_hero(1, card_regions[1], "#DCEEF9", "#B45309", body_1, "Riyadh strike 11 hurt, Hodeidah hit")
 
     # #2 Hero (314x86): Widened neoclassical courthouse columns across #EDE9FE + wooden gavel + GUILTY / 10 OF 12
     body_2 = (
