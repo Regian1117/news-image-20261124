@@ -101,7 +101,7 @@ def render_card(card: CardItem, scenes: Dict[int, str], tier: str) -> str:
         f'  <div class="scene-wrap">{scenes[card.scene_id]}</div>'
         f'  <h2 class="headline">{style_headline(card.headline)}</h2>'
         f'  <p class="deck">{escape(card.deck)}</p>'
-        f'  <div class="card-src src-inline">{escape(card.sources)}</div>'
+        f'  <div class="card-src">{escape(card.sources)}</div>'
         f'</article>'
     )
 
@@ -177,7 +177,7 @@ def build_html() -> str:
     )
 
     meta_right = (
-        f"{total} DATED STORIES  ·  {len(REGIONS)} REGIONS  ·  {FIELD_COUNT} FIELDS  ·  TUE 24 NOV 2026"
+        f"{total} DATED STORIES  ·  {len(REGIONS)} REGIONS  ·  {FIELD_COUNT} FIELDS  ·  ALL TUE 24 NOV 2026 (UTC)"
     )
 
     return f"""<!DOCTYPE html>
@@ -236,7 +236,7 @@ def build_html() -> str:
   }}
   .meta-right {{
     color: #1E293B;
-    font-size: 10.8px;
+    font-size: 10.4px;
     font-weight: 700;
     font-variant-numeric: tabular-nums;
     letter-spacing: 0.3px;
@@ -441,8 +441,8 @@ def build_html() -> str:
   }}
   .card-src {{
     margin-top: auto;
-    color: #64748B;
-    font-weight: 600;
+    color: #334155;
+    font-weight: 700;
     border-top: 1px solid #ECE7DC;
     padding-top: 1.5px;
     white-space: nowrap;
@@ -457,8 +457,9 @@ def build_html() -> str:
     flex-shrink: 0;
   }}
   .hero-card {{
-    background: #FFFDF9;
-    border-top-width: 3.5px;
+    background: #FFFBF2;
+    border: 1.4px solid #C2B8A3;
+    border-top-width: 4px;
     padding: 3.5px 5.5px 4px 5.5px;
   }}
   .hero-card .card-meta {{
@@ -479,17 +480,17 @@ def build_html() -> str:
     height: 90px;
   }}
   .hero-card .headline {{
-    font-size: 18.0px;
-    font-weight: 700;
-    line-height: 1.08;
-    letter-spacing: -0.15px;
+    font-size: 19.5px;
+    font-weight: 800;
+    line-height: 1.07;
+    letter-spacing: 0.1px;
     margin-bottom: 2.5px;
   }}
   .hero-card .deck {{
-    font-size: 10.3px;
-    line-height: 1.15;
+    font-size: 11.2px;
+    line-height: 1.18;
   }}
-  .hero-card .src-inline {{
+  .hero-card .card-src {{
     font-size: 9.2px;
   }}
 
@@ -525,17 +526,17 @@ def build_html() -> str:
     height: 50px;
   }}
   .mid-card .headline {{
-    font-size: 13.0px;
-    font-weight: 700;
+    font-size: 13.2px;
+    font-weight: 800;
     line-height: 1.08;
-    letter-spacing: -0.15px;
+    letter-spacing: 0.05px;
     margin-bottom: 1.5px;
   }}
   .mid-card .deck {{
-    font-size: 9.25px;
-    line-height: 1.12;
+    font-size: 9.5px;
+    line-height: 1.13;
   }}
-  .mid-card .src-inline {{
+  .mid-card .card-src {{
     font-size: 8.4px;
   }}
 
@@ -724,9 +725,9 @@ def build_html() -> str:
     border: 1.2px solid #DC2626;
     border-left: 4px solid #DC2626;
     border-radius: 2px;
-    padding: 2.5px 7px;
-    font-size: 9.3px;
-    line-height: 1.2;
+    padding: 2px 7px;
+    font-size: 9.8px;
+    line-height: 1.18;
     font-weight: 600;
     color: #3B0707;
     flex-shrink: 0;

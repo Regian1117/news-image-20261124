@@ -82,9 +82,9 @@ EDITION_DATE_SHORT = "TUE 24 NOV 2026 (UTC)"
 FIELD_COUNT = 25
 
 SUBHEAD = (
-    "China probes Shanghai chief Chen Jining · "
+    "Yemen's Houthis hit Riyadh tower; 11 hurt · "
     "US jury convicts Huawei on 10 of 12 counts · "
-    "Russian strikes kill 9 in Ukraine."
+    "China probes Chen Jining."
 )
 
 TIMELINE_ANCHORS: List[Tuple[str, str]] = [
@@ -98,7 +98,7 @@ TIMELINE_ANCHORS: List[Tuple[str, str]] = [
 ]
 
 KEY_NUMBERS: List[Tuple[str, str]] = [
-    ("11 hurt", "Riyadh tower strike"),
+    ("9 dead", "Ukraine strikes toll"),
     ("$41bn", "Sanofi buys Insmed"),
     ("50,018", "Dow record close"),
     ("36", "Amazon Leo satellites"),
@@ -109,12 +109,12 @@ KEY_NUMBERS: List[Tuple[str, str]] = [
 HERO_CARDS: List[CardItem] = [
     CardItem(
         num=1,
-        region="East Asia",
-        kicker="SHANGHAI · POLITICS",
-        epistemic="OFFICIAL",
-        sources="Reuters · CNN",
-        headline="China probes Shanghai party chief Chen Jining",
-        deck="Politburo member, 62, investigated for serious violations — fourth senior leader probed this term.",
+        region="Middle East",
+        kicker="RIYADH · WAR",
+        epistemic="REPORTED",
+        sources="Al Arabiya",
+        headline="Yemen's Houthis hit Riyadh tower; 11 hurt",
+        deck="Saudi coalition blames Houthis for financial tower strike and bombs Hodeidah port.",
         scene_id=1,
     ),
     CardItem(
@@ -129,12 +129,12 @@ HERO_CARDS: List[CardItem] = [
     ),
     CardItem(
         num=3,
-        region="Europe",
-        kicker="UKRAINE · WAR",
-        epistemic="CONFIRMED",
-        sources="Reuters · Kyiv Ind.",
-        headline="Russian strikes kill 9 across Ukraine",
-        deck="Dawn missile and drone raids hit Zaporizhzhia homes, injuring 40+ in nationwide tally.",
+        region="East Asia",
+        kicker="SHANGHAI · POLITICS",
+        epistemic="OFFICIAL",
+        sources="Reuters · CNN",
+        headline="China probes Shanghai party chief Chen Jining",
+        deck="Politburo member, 62, investigated for serious violations — fourth senior leader probed this term.",
         scene_id=3,
     ),
 ]
@@ -142,12 +142,12 @@ HERO_CARDS: List[CardItem] = [
 MID_CARDS: List[CardItem] = [
     CardItem(
         num=4,
-        region="Middle East",
-        kicker="RIYADH · WAR",
-        epistemic="REPORTED",
-        sources="Al Arabiya",
-        headline="Yemen's Houthis hit Riyadh tower",
-        deck="Saudi coalition blames Houthis for 11 hurt in tower strike; bombs Hodeidah.",
+        region="Europe",
+        kicker="UKRAINE · WAR",
+        epistemic="CONFIRMED",
+        sources="Reuters · Kyiv Ind.",
+        headline="Russian strikes kill 9 across Ukraine",
+        deck="Dawn raids hit Zaporizhzhia homes; 40+ hurt nationwide.",
         scene_id=4,
     ),
     CardItem(
@@ -245,7 +245,7 @@ MID_CARDS: List[CardItem] = [
 BRIEF_COLUMNS: List[List[BriefItem]] = [
     # Col A (#14-#26 = 13 rows)
     [
-        BriefItem(14, "Europe", "England:", "Record 5,258 summer 2026 heat deaths.", "UKHSA", "OFFICIAL", highlight="5,258"),
+        BriefItem(14, "Europe", "England:", "5,258 heat deaths in summer 2026.", "UKHSA", "OFFICIAL", highlight="5,258"),
         BriefItem(15, "Europe", "BYD France:", "Exclusive talks for Ineos EV plant.", "Reuters", "OFFICIAL"),
         BriefItem(16, "Europe", "UK defence:", "Agencies warn arms firms of sabotage.", "MoD", "OFFICIAL"),
         BriefItem(17, "Europe", "Football:", "Real Madrid beat PSV 5–1; Arsenal 1–1.", "UEFA", "CONFIRMED"),
@@ -277,10 +277,10 @@ BRIEF_COLUMNS: List[List[BriefItem]] = [
 ]
 
 MAP_PINS: List[MapPin] = [
-    MapPin(1, "East Asia", 305, 53),
+    MapPin(1, "Middle East", 215, 71),
     MapPin(2, "N. America", 101, 41),
-    MapPin(3, "Europe", 209, 35),
-    MapPin(4, "Middle East", 215, 71),
+    MapPin(3, "East Asia", 305, 53),
+    MapPin(4, "Europe", 209, 35),
     MapPin(5, "Europe", 175, 43),
     MapPin(6, "N. America", 73, 56),
     MapPin(7, "World", 115, 92),
@@ -294,7 +294,7 @@ MAP_PINS: List[MapPin] = [
 
 DATE_CHECK_TEXT = (
     "Every story happened or was first reported on Tue 24 Nov 2026 (UTC). "
-    "Left out: Iran Hormuz mines claim, Nvidia reinstates Huang & "
+    "Left out: Iran Hormuz mines claim, Nvidia CEO return & "
     "EU 22nd Russia sanctions (Mon 23 Nov) · COP31 no deal (Sun 22 Nov) · "
     "Shenzhou-24 launch (Wed 25 Nov)."
 )
