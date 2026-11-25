@@ -106,10 +106,10 @@ def build_scenes() -> Dict[int, str]:
         # Fire burst on tower
         '<polygon points="146,17 149,23 156,21 152,28 159,32 151,34 153,41 146,35 140,40 142,33 134,30 141,26 140,19 144,23" fill="#DC2626"/>'
         '<polygon points="146,22 148,26 152,25 150,29 153,32 149,32 149,35 146,33 143,34 144,31 141,30 144,28 143,24 145,26" fill="#FACC15"/>'
-        + _pill("p1", 196, 15, 108, 28, "#991B1B", "11 HURT", "#FFFFFF", 13.4, rx=3.5, stroke="#450A0A", stroke_w=0.9)
-        + _pill("p2", 196, 49, 108, 27, "#FFFFFF", "HODEIDAH HIT", "#9A3412", 10.6, rx=3.0, stroke="#B45309", stroke_w=1.2)
+        + _pill("p1", 190, 15, 114, 28, "#991B1B", "11 HURT", "#FFFFFF", 13.4, rx=3.5, stroke="#450A0A", stroke_w=0.9)
+        + _pill("p2", 190, 48, 114, 27, "#FFFFFF", "SAUDI RETALIATION", "#9A3412", 9.0, rx=3.0, stroke="#B45309", stroke_w=1.2, letter_spacing=0.1, font_weight=800)
     )
-    scenes[1] = _wrap_hero(1, card_regions[1], "#DCEEF9", "#B45309", body_1, "Riyadh tower strike 11 hurt, Hodeidah hit")
+    scenes[1] = _wrap_hero(1, card_regions[1], "#DCEEF9", "#B45309", body_1, "Riyadh tower strike 11 hurt, Saudi retaliation")
 
     # #2 Hero (314x90): Neoclassical courthouse columns on #EDE9FE + tilted wooden gavel + GUILTY / 10 OF 12
     body_2 = (
@@ -402,9 +402,9 @@ def build_scenes() -> Dict[int, str]:
 def build_world_map_svg(pins: List[MapPin] = MAP_PINS) -> str:
     """Full-world editorial locator map (360x185) with clearly framed continents & Pins 1–13."""
     graticule = (
-        '<g stroke="#C6DFEE" stroke-width="0.7" stroke-dasharray="2.5 2.5">'
+        '<g stroke="#CFE4F2" stroke-width="0.6">'
         '<line x1="0" y1="46" x2="360" y2="46"/>'
-        '<line x1="0" y1="92" x2="360" y2="92" stroke-dasharray="none" opacity="0.85"/>'
+        '<line x1="0" y1="92" x2="360" y2="92"/>'
         '<line x1="0" y1="138" x2="360" y2="138"/>'
         '<line x1="90" y1="0" x2="90" y2="185"/>'
         '<line x1="180" y1="0" x2="180" y2="185"/>'

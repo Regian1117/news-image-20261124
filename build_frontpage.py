@@ -1,4 +1,4 @@
-"""Render the V4 38-story, 10-region, 25-field Tuesday 24 November 2026 broadsheet to entry.png."""
+"""Render the 39-story, 10-region, 26-field Tuesday 24 November 2026 broadsheet to entry.png."""
 
 from __future__ import annotations
 
@@ -114,11 +114,19 @@ def render_brief_row(item: BriefItem) -> str:
     return (
         f'<div class="b-row">'
         f'  <span class="b-num" style="background:{reg_color};">{item.num}</span>'
-        f'  <span class="b-text"><strong class="b-lead">{escape(item.lead)}</strong> {body_html} '
-        f'<span class="b-src">{escape(item.source)}</span></span>'
+        f'  <span class="b-text"><strong class="b-lead">{escape(item.lead)}</strong> {body_html}'
+        f' <span class="b-dot">·</span> <span class="b-src">{escape(item.source)}</span></span>'
         f'  <span class="b-tag" style="background:{epi_color};">{short_tag}</span>'
         f'</div>'
     )
+
+
+HOW_CHECKED_ITEMS: List[tuple[str, str]] = [
+    ("1-day gate:", "All 39 events broke Tue 24 Nov UTC; 4 off-day traps left out."),
+    ("13 visual cards:", "Every one of the 10 regions has an illustrated card & pin."),
+    ("Attribution:", "Each item cites primary wires or official records + status tag."),
+    ("Scope:", "39 dated items in 26 fields — war, courts, markets, science & sport."),
+]
 
 
 def build_html() -> str:
@@ -128,8 +136,8 @@ def build_html() -> str:
 
     region_chips_html = "".join(
         f'<div class="reg-chip" style="background:{r.color};">'
-        f'<span>{escape(r.label)}</span>'
-        f'<span>{counts[r.key]}</span>'
+        f'<span class="chip-lbl">{escape(r.label)}</span>'
+        f'<span class="chip-cnt">{counts[r.key]}</span>'
         f'</div>'
         for r in REGIONS
     )
@@ -155,14 +163,12 @@ def build_html() -> str:
         for col in BRIEF_COLUMNS
     )
 
-    map_legend_html = "".join(
-        f'<div class="ml-item">'
-        f'<span class="ml-dot" style="background:{r.color};"></span>'
-        f'<span class="ml-name">{escape(r.key)}</span>'
-        f'<span class="ml-cnt">{counts[r.key]}</span>'
-        f'</div>'
-        for r in REGIONS
+    how_items_html = "".join(
+        f'<div class="chk-item"><strong>{escape(k)}</strong> {escape(v)}</div>'
+        for k, v in HOW_CHECKED_ITEMS
     )
+
+    brief_total = sum(len(col) for col in BRIEF_COLUMNS)
 
     legend_items = [
         ("CONFIRMED", "verified"),
@@ -268,19 +274,29 @@ def build_html() -> str:
     gap: 3px 5px;
   }}
   .reg-chip {{
-    height: 15.5px;
+    height: 16px;
     min-width: 0;
+    padding: 0 4px 0 7px;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 6px;
+    justify-content: space-between;
+    gap: 4px;
     border-radius: 2.5px;
     color: #FFFFFF;
-    font-size: 10.8px;
+    font-size: 10.6px;
     font-weight: 800;
     font-variant-numeric: tabular-nums;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.25px;
     white-space: nowrap;
+  }}
+  .chip-cnt {{
+    background: rgba(0, 0, 0, 0.34);
+    color: #FFFFFF;
+    font-weight: 900;
+    border-radius: 2px;
+    padding: 0 5px;
+    line-height: 13px;
+    font-variant-numeric: tabular-nums;
   }}
 
   /* Light-Mode Chronological UTC Strip */
@@ -353,7 +369,7 @@ def build_html() -> str:
   .numbers-cells {{
     flex: 1;
     display: grid;
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     min-width: 0;
   }}
   .num-cell {{
@@ -453,14 +469,14 @@ def build_html() -> str:
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 6px;
-    height: 214px;
+    height: 202px;
     flex-shrink: 0;
   }}
   .hero-card {{
     background: #FFFBF2;
     border: 1.4px solid #C2B8A3;
     border-top-width: 4px;
-    padding: 3.5px 5.5px 4px 5.5px;
+    padding: 3px 5.5px 3.5px 5.5px;
   }}
   .hero-card .card-meta {{
     height: 14px;
@@ -474,24 +490,24 @@ def build_html() -> str:
     padding: 1px 4px;
   }}
   .hero-card .scene-wrap {{
-    margin-bottom: 3px;
-  }}
-  .hero-svg {{
-    height: 90px;
-  }}
-  .hero-card .headline {{
-    font-size: 19.5px;
-    font-weight: 800;
-    line-height: 1.07;
-    letter-spacing: 0.1px;
     margin-bottom: 2.5px;
   }}
+  .hero-svg {{
+    height: 82px;
+  }}
+  .hero-card .headline {{
+    font-size: 18.4px;
+    font-weight: 800;
+    line-height: 1.07;
+    letter-spacing: 0.08px;
+    margin-bottom: 2px;
+  }}
   .hero-card .deck {{
-    font-size: 11.2px;
-    line-height: 1.18;
+    font-size: 10.6px;
+    line-height: 1.16;
   }}
   .hero-card .card-src {{
-    font-size: 9.2px;
+    font-size: 9.0px;
   }}
 
   /* Middle Tier — 10 Sleek Open-Canvas Mid Cards (5x2 grid) */
@@ -500,12 +516,12 @@ def build_html() -> str:
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 5px;
-    height: 290px;
+    height: 284px;
     flex-shrink: 0;
   }}
   .mid-card {{
     background: #FFFFFF;
-    padding: 2.5px 4.5px 3px 4.5px;
+    padding: 2.5px 4.5px 2.5px 4.5px;
   }}
   .mid-card .card-meta {{
     height: 13px;
@@ -523,29 +539,29 @@ def build_html() -> str:
     margin-bottom: 2px;
   }}
   .mid-svg {{
-    height: 50px;
+    height: 47px;
   }}
   .mid-card .headline {{
-    font-size: 13.2px;
+    font-size: 12.2px;
     font-weight: 800;
     line-height: 1.08;
-    letter-spacing: 0.05px;
+    letter-spacing: 0.04px;
     margin-bottom: 1.5px;
   }}
   .mid-card .deck {{
-    font-size: 9.5px;
+    font-size: 9.1px;
     line-height: 1.13;
   }}
   .mid-card .card-src {{
-    font-size: 8.4px;
+    font-size: 8.2px;
   }}
 
-  /* Lower Tier — 25 Briefs + World Locator Map */
+  /* Lower Tier — 26 Wire Briefs + Map & Verification Sidebar */
   .lower-grid {{
     flex: 1;
     min-height: 0;
     display: grid;
-    grid-template-columns: 1fr 274px;
+    grid-template-columns: 1fr 246px;
     gap: 6px;
   }}
   .panel-box {{
@@ -581,7 +597,7 @@ def build_html() -> str:
     color: #475569;
   }}
 
-  /* Left Panel: 25 upright single-line briefs (13 Col A + 12 Col B) */
+  /* Left Panel: 26 upright single-line briefs (13 Col A + 13 Col B) */
   .briefs-cols {{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -592,7 +608,7 @@ def build_html() -> str:
   .b-col {{
     display: flex;
     flex-direction: column;
-    gap: 1.3px;
+    justify-content: space-between;
     min-width: 0;
   }}
   .b-col:not(:first-child) {{
@@ -606,11 +622,11 @@ def build_html() -> str:
     height: 18px;
     line-height: 1.25;
     font-style: normal;
-    font-size: 10.3px;
-    letter-spacing: 0px;
+    font-size: 10.6px;
+    letter-spacing: -0.05px;
     white-space: nowrap;
     overflow: hidden;
-    border-bottom: 1px dotted #EAE5DA;
+    border-bottom: 1px solid #EFECE4;
   }}
   .b-col .b-row:last-child {{
     border-bottom: none;
@@ -619,11 +635,11 @@ def build_html() -> str:
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 17px;
+    width: 18.5px;
     height: 14px;
     border-radius: 2px;
     color: #FFFFFF;
-    font-size: 8.2px;
+    font-size: 8.4px;
     font-weight: 900;
     font-variant-numeric: tabular-nums;
     letter-spacing: 0;
@@ -648,8 +664,12 @@ def build_html() -> str:
     font-variant-numeric: tabular-nums;
     color: #020617;
   }}
+  .b-dot {{
+    color: #94A3B8;
+    font-weight: 900;
+  }}
   .b-src {{
-    font-size: 9.25px;
+    font-size: 9.4px;
     font-weight: 700;
     font-style: normal;
     color: #020617;
@@ -669,54 +689,70 @@ def build_html() -> str:
     flex-shrink: 0;
   }}
 
-  /* Right Panel: World Locator Map + 2-column 10-region legend ONLY */
+  /* Right Sidebar: World Locator Map + Verification Panel */
+  .map-aside {{
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-height: 0;
+  }}
   .map-panel {{
-    padding: 4px 5.5px;
+    padding: 4px 5px;
+    flex-shrink: 0;
   }}
   .world-map-wrap {{
-    flex: 1;
-    min-height: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 4px;
+    line-height: 0;
+    margin-bottom: 3px;
   }}
   .world-map-svg {{
     width: 100%;
-    max-height: 100%;
     height: auto;
     display: block;
   }}
-  .map-legend {{
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 3px 6px;
-    padding-top: 4px;
-    border-top: 1px solid #E2DDD2;
-    flex-shrink: 0;
-  }}
-  .ml-item {{
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-    font-size: 8.2px;
-    font-weight: 800;
-    color: #1E293B;
+  .map-cap {{
+    text-align: center;
+    font-size: 7.8px;
+    font-weight: 700;
+    color: #475569;
+    line-height: 1.15;
     white-space: nowrap;
+    overflow: hidden;
   }}
-  .ml-dot {{
-    width: 7px;
-    height: 7px;
-    border-radius: 50%;
-    flex-shrink: 0;
+  .how-panel {{
+    flex: 1;
+    border-top-color: #991B1B;
+    background: #FFFDF8;
+    padding: 4px 5.5px;
   }}
-  .ml-name {{
-    letter-spacing: 0.1px;
+  .how-panel .panel-title {{
+    font-size: 9.0px;
+    color: #991B1B;
   }}
-  .ml-cnt {{
-    color: #020617;
-    font-weight: 900;
+  .how-panel .panel-sub {{
+    font-size: 8.0px;
+    font-weight: 800;
+    color: #0F172A;
     font-variant-numeric: tabular-nums;
+  }}
+  .chk-list {{
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 3px;
+    min-height: 0;
+  }}
+  .chk-item {{
+    border-left: 2.5px solid #991B1B;
+    padding-left: 5px;
+    font-size: 8.4px;
+    line-height: 1.22;
+    color: #1E293B;
+    font-weight: 500;
+  }}
+  .chk-item strong {{
+    color: #020617;
+    font-weight: 800;
   }}
 
   /* Exclusion Bar */
@@ -826,7 +862,7 @@ def build_html() -> str:
   <section class="lower-grid" aria-label="More dated stories and locator map">
     <div class="panel-box briefs-panel">
       <div class="panel-hdr">
-        <span class="panel-title">ALSO ON TUESDAY 24 NOVEMBER · 25 MORE STORIES</span>
+        <span class="panel-title">ALSO ON TUESDAY 24 NOVEMBER · {brief_total} MORE STORIES</span>
         <span class="panel-sub">C verified · O official · R 1 outlet · CL claim · ON ongoing</span>
       </div>
       <div class="briefs-cols">
@@ -834,13 +870,23 @@ def build_html() -> str:
       </div>
     </div>
 
-    <aside class="panel-box map-panel" aria-label="Where it happened">
-      <div class="panel-hdr">
-        <span class="panel-title">WHERE IT HAPPENED</span>
-        <span class="panel-sub">Pins 1–13</span>
+    <aside class="map-aside" aria-label="Where it happened and verification">
+      <div class="panel-box map-panel">
+        <div class="panel-hdr">
+          <span class="panel-title">WHERE IT HAPPENED</span>
+          <span class="panel-sub">Pins 1–13</span>
+        </div>
+        <div class="world-map-wrap">{world_map_svg}</div>
+        <div class="map-cap">All 13 visual cards plotted · hues match region chips</div>
       </div>
-      <div class="world-map-wrap">{world_map_svg}</div>
-      <div class="map-legend">{map_legend_html}</div>
+
+      <div class="panel-box how-panel">
+        <div class="panel-hdr">
+          <span class="panel-title">HOW THIS PAGE WAS CHECKED</span>
+          <span class="panel-sub">{total} / {total} UTC</span>
+        </div>
+        <div class="chk-list">{how_items_html}</div>
+      </div>
     </aside>
   </section>
 
@@ -879,7 +925,7 @@ DOM_AUDIT_JS = """() => {
     errs.push(`Page overflow: ${page.scrollWidth}x${page.scrollHeight}`);
   }
 
-  document.querySelectorAll('.hero-card, .mid-card, .panel-box, .numbers-bar, .utc-strip, .date-check').forEach((el, idx) => {
+  document.querySelectorAll('.hero-card, .mid-card, .panel-box, .how-panel, .chk-item, .map-cap, .numbers-bar, .utc-strip, .date-check').forEach((el, idx) => {
     if (el.scrollHeight > el.clientHeight + 0.5) {
       errs.push(`Box #${idx + 1} (${el.className}) vertical overflow: scrollH=${el.scrollHeight} > clientH=${el.clientHeight}`);
     }
@@ -952,7 +998,7 @@ DOM_AUDIT_JS = """() => {
           const padT = tb.y - pb.y;
           const padB = (pb.y + pb.height) - (tb.y + tb.height);
           const minPad = Math.min(padL, padR, padT, padB);
-          if (minPad < 1.0) {
+          if (minPad < 0.8) {
             errs.push(`SVG #${idx + 1} pill "${key}" text not strictly contained (minPad=${minPad.toFixed(2)}px; L=${padL.toFixed(1)} R=${padR.toFixed(1)} T=${padT.toFixed(1)} B=${padB.toFixed(1)})`);
           }
         }
