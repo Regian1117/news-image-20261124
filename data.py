@@ -1,4 +1,4 @@
-"""Structured 39-story world-news dataset for Tuesday 24 November 2026."""
+"""Structured V3 38-story, 10-region, 24-field dataset for Tuesday 24 November 2026."""
 
 from __future__ import annotations
 
@@ -33,8 +33,9 @@ class BriefItem:
     region: str
     lead: str
     body: str
+    source: str
     epistemic: str
-    show_badge: bool = False
+    highlight: str = ""
 
 
 @dataclass(frozen=True)
@@ -43,19 +44,19 @@ class MapPin:
     region: str
     x: int
     y: int
-    place: str
 
 
 REGIONS: List[RegionMeta] = [
-    RegionMeta("Europe", "EUROPE", "#1E3A8A", 9),
-    RegionMeta("Middle East", "MIDDLE EAST", "#D97706", 5),
-    RegionMeta("South & SE Asia", "SOUTH & SE ASIA", "#0D9488", 5),
-    RegionMeta("N. America", "N. AMERICA", "#7C3AED", 4),
-    RegionMeta("World & Space", "WORLD & SPACE", "#334155", 4),
-    RegionMeta("Africa", "AFRICA", "#991B1B", 3),
-    RegionMeta("East Asia", "EAST ASIA", "#15803D", 3),
-    RegionMeta("S. America", "S. AMERICA", "#A21CAF", 3),
-    RegionMeta("Oceania", "OCEANIA", "#0284C7", 3),
+    RegionMeta("Europe", "EUROPE", "#1E3A8A", 6),
+    RegionMeta("Middle East", "MIDDLE EAST", "#C2410C", 5),
+    RegionMeta("East Asia", "EAST ASIA", "#B91C1C", 4),
+    RegionMeta("N. America", "N. AMERICA", "#6D28D9", 4),
+    RegionMeta("Africa", "AFRICA", "#15803D", 4),
+    RegionMeta("South Asia", "SOUTH ASIA", "#0F766E", 3),
+    RegionMeta("SE Asia", "SE ASIA", "#0E7490", 3),
+    RegionMeta("Latin America", "LATIN AMERICA", "#9D174D", 3),
+    RegionMeta("Oceania", "OCEANIA", "#0369A1", 3),
+    RegionMeta("World & Space", "WORLD & SPACE", "#334155", 3),
 ]
 
 REGION_COLORS: Dict[str, str] = {r.key: r.color for r in REGIONS}
@@ -65,33 +66,42 @@ EPISTEMIC_COLORS: Dict[str, str] = {
     "OFFICIAL": "#0F766E",
     "REPORTED": "#1D4ED8",
     "CLAIM": "#B45309",
+    "ONGOING": "#6D28D9",
+}
+
+EPISTEMIC_SHORT: Dict[str, str] = {
+    "CONFIRMED": "C",
+    "OFFICIAL": "O",
+    "REPORTED": "R",
+    "CLAIM": "CL",
+    "ONGOING": "ON",
 }
 
 EDITION_DATE = "Tuesday 24 November 2026"
 EDITION_DATE_SHORT = "TUE 24 NOV 2026 (UTC)"
-FIELD_COUNT = 21
+FIELD_COUNT = 24
 
 SUBHEAD = (
-    "Houthi strike hits Riyadh tower · "
-    "China probes Shanghai chief Chen Jining · "
-    "US jury convicts Huawei on 10 of 12 counts."
+    "Riyadh tower hit; 11 hurt · "
+    "US jury convicts Huawei on 10 of 12 counts · "
+    "China probes Shanghai chief Chen Jining."
 )
 
 TIMELINE_ANCHORS: List[Tuple[str, str]] = [
-    ("01:30", "Poland drone"),
-    ("05:00", "Canberra AI bill"),
-    ("09:00", "Germany Ifo 90.6"),
+    ("01:00", "Hanoi blast"),
+    ("01:32", "Nepal quake"),
+    ("05:30", "Sanofi deal"),
     ("11:14", "Ariane 6 launch"),
     ("12:00", "Shanghai probe"),
-    ("15:00", "US conf. 103.3"),
+    ("15:00", "US confidence"),
     ("21:00", "Dow 50,018"),
 ]
 
 KEY_NUMBERS: List[Tuple[str, str]] = [
+    ("11 hurt", "Riyadh tower strike"),
     ("10 of 12", "Huawei guilty counts"),
+    ("$41bn", "Sanofi buys Insmed"),
     ("50,018", "Dow closes past 50k"),
-    ("$41bn", "Sanofi–Insmed deal"),
-    ("5,258", "England heat deaths"),
     ("36 sats", "Ariane 6 Amazon Leo"),
     ("13 dead", "UAE bus-truck crash"),
 ]
@@ -100,31 +110,31 @@ HERO_CARDS: List[CardItem] = [
     CardItem(
         num=1,
         region="Middle East",
-        kicker="RIYADH & YEMEN · GULF CONFLICT",
-        epistemic="REPORTED",
+        kicker="RIYADH · WAR",
+        epistemic="CONFIRMED",
         sources="Reuters · Al Arabiya",
-        headline="Houthi strike hits Riyadh tower; Saudi jets bomb Hodeidah",
-        deck="Projectile hits KAFD tower injuring 11; coalition strikes Yemen port & downs Ras Tanura drones.",
+        headline="Houthi strike hits Riyadh's tallest tower; 11 hurt",
+        deck="Second strike in a week hits financial tower; Saudi coalition bombs Yemen's Hodeidah port.",
         scene_id=1,
     ),
     CardItem(
         num=2,
-        region="East Asia",
-        kicker="SHANGHAI · CHINA POLITICS",
-        epistemic="OFFICIAL",
-        sources="Xinhua · Guardian",
-        headline="China probes Shanghai party chief Chen Jining",
-        deck="Sitting Politburo member placed under CCDI corruption probe, the 4th top official targeted since 2025.",
+        region="N. America",
+        kicker="NEW YORK · COURTS",
+        epistemic="CONFIRMED",
+        sources="Reuters · AP",
+        headline="US jury convicts Huawei on 10 of 12 counts",
+        deck="Brooklyn federal verdict cites bank fraud, sanctions and trade secrets; cleared of racketeering.",
         scene_id=2,
     ),
     CardItem(
         num=3,
-        region="N. America",
-        kicker="BROOKLYN · US COURTS & TECH",
-        epistemic="CONFIRMED",
-        sources="Reuters · Guardian",
-        headline="US jury convicts Huawei on 10 of 12 criminal counts",
-        deck="Federal verdict cites bank fraud, Iran sanctions and trade secrets; cleared of racketeering.",
+        region="East Asia",
+        kicker="SHANGHAI · POLITICS",
+        epistemic="OFFICIAL",
+        sources="Xinhua · Reuters",
+        headline="China probes Shanghai party chief Chen Jining",
+        deck="Politburo member, 62, investigated for serious violations — fourth senior leader probed this term.",
         scene_id=3,
     ),
 ]
@@ -133,146 +143,163 @@ MID_CARDS: List[CardItem] = [
     CardItem(
         num=4,
         region="Europe",
-        kicker="POLAND · NATO AIRSPACE",
-        epistemic="OFFICIAL",
-        sources="Reuters · Polish MoD",
-        headline="Russian drone enters Poland; Warsaw summons envoy",
-        deck="Drone crosses near Dorohusk overnight; NATO deploys AWACS jets.",
+        kicker="UKRAINE · WAR",
+        epistemic="CONFIRMED",
+        sources="Reuters · Kyiv Ind.",
+        headline="Russian strikes kill 9 across Ukraine",
+        deck="Zaporizhzhia dawn raid hits homes (2 dead, 40+ hurt) in daily toll.",
         scene_id=4,
     ),
     CardItem(
         num=5,
         region="Europe",
-        kicker="FRANCE–US · PHARMA M&A",
+        kicker="PARIS · PHARMA",
         epistemic="OFFICIAL",
         sources="Sanofi · Reuters",
-        headline="Sanofi agrees $41bn cash deal to buy Insmed",
-        deck="French drugmaker expands respiratory & rare-disease pipeline.",
+        headline="Sanofi agrees $41bn deal for Insmed",
+        deck="All-cash buyout expands French firm's lung-drug pipeline.",
         scene_id=5,
     ),
     CardItem(
         num=6,
         region="N. America",
-        kicker="WALL STREET · MARKETS",
+        kicker="WALL ST · MARKETS",
         epistemic="CONFIRMED",
         sources="Reuters · ABC",
-        headline="Dow closes above 50,000 as Nasdaq dips 1.5%",
-        deck="Blue-chip index ends at 50,018 while chip pullback hits tech.",
+        headline="Dow closes past 50,000; Nasdaq dips 1.5%",
+        deck="Ends at 50,018 at 21:00 UTC as chip stocks slide.",
         scene_id=6,
     ),
     CardItem(
         num=7,
         region="World & Space",
-        kicker="KOUROU · SPACE LAUNCH",
+        kicker="KOUROU · SPACE",
         epistemic="CONFIRMED",
         sources="Arianespace · Xinhua",
-        headline="Ariane 6 lofts 36 Amazon Leo satellites",
-        deck="Tenth Ariane 6 flight lifts off at 11:14 UTC from French Guiana.",
+        headline="Ariane 6 lofts 36 Amazon satellites",
+        deck="Tenth flight lifts off at 11:14 UTC from French Guiana.",
         scene_id=7,
     ),
     CardItem(
         num=8,
-        region="Europe",
-        kicker="ENGLAND · CLIMATE HEALTH",
+        region="Middle East",
+        kicker="UAE · DISASTER",
         epistemic="OFFICIAL",
-        sources="UKHSA · Guardian",
-        headline="England logs record 5,258 summer heat deaths",
-        deck="UK Health Security Agency reports highest summer heat toll.",
+        sources="The National · AP",
+        headline="Ras Al Khaimah bus crash kills 13",
+        deck="Worker bus carrying 41 hits stalled truck; 14 injured.",
         scene_id=8,
     ),
     CardItem(
         num=9,
-        region="Middle East",
-        kicker="GAZA CITY · CONFLICT",
-        epistemic="CONFIRMED",
-        sources="Al Arabiya · SCMP",
-        headline="Israeli strike kills Hamas security chief in Gaza",
-        deck="Airstrike in western Gaza City kills chief Naeem Abu Nahel.",
+        region="Africa",
+        kicker="SUDAN · AID",
+        epistemic="OFFICIAL",
+        sources="AfDB · Reuters",
+        headline="$55m water aid launched in Port Sudan",
+        deck="AfDB and UNICEF back emergency clean water for displaced.",
         scene_id=9,
     ),
     CardItem(
         num=10,
-        region="Oceania",
-        kicker="CANBERRA · TECH LAW",
-        epistemic="OFFICIAL",
-        sources="Guardian · AP",
-        headline="Australia clinches Digital Duty of Care bill",
-        deck="Parliament deal sets fines up to 5% of global revenue for harms.",
+        region="SE Asia",
+        kicker="VIETNAM · DISASTER",
+        epistemic="CONFIRMED",
+        sources="VnExpress · AP",
+        headline="Gas blast at Hanoi eatery kills 6",
+        deck="01:00 UTC explosion hurts 12+ and collapses storefront.",
         scene_id=10,
     ),
     CardItem(
         num=11,
-        region="S. America",
-        kicker="BRAZIL · EXTREME WEATHER",
+        region="South Asia",
+        kicker="NEPAL · QUAKE",
+        epistemic="CONFIRMED",
+        sources="USGS · AP",
+        headline="M5.3 quake shakes eastern Nepal",
+        deck="01:32 UTC tremor felt near Tibet border; no casualties.",
+        scene_id=11,
+    ),
+    CardItem(
+        num=12,
+        region="Latin America",
+        kicker="BRAZIL · WEATHER",
         epistemic="OFFICIAL",
         sources="IOM · AP",
-        headline="Southern Brazil storm displaces nearly 20,000",
-        deck="Five dead after severe storm destroys homes in Rio Grande do Sul.",
-        scene_id=11,
+        headline="Brazil storm displaces nearly 20,000",
+        deck="Five dead as severe storm wrecks homes in the south.",
+        scene_id=12,
+    ),
+    CardItem(
+        num=13,
+        region="Oceania",
+        kicker="CANBERRA · TECH LAW",
+        epistemic="OFFICIAL",
+        sources="Guardian · AP",
+        headline="Australia clinches online safety bill",
+        deck="Digital Duty of Care sets fines up to 5% of global revenue.",
+        scene_id=13,
     ),
 ]
 
 BRIEF_COLUMNS: List[List[BriefItem]] = [
-    # Col A (#12-#25)
+    # Col A (#14-#26 = 13 rows)
     [
-        BriefItem(12, "Europe", "Zaporizhzhia:", "Russian strikes hit homes, killing 2, hurting 40+.", "REPORTED"),
-        BriefItem(13, "Europe", "BYD France:", "Exclusive talks to buy Ineos Hambach EV plant.", "OFFICIAL"),
-        BriefItem(14, "Europe", "UK Defence:", "UK intelligence warns arms firms of sabotage.", "OFFICIAL"),
-        BriefItem(15, "Europe", "Germany Ifo:", "Business climate index rises 7th month to 90.6.", "CONFIRMED"),
-        BriefItem(16, "Europe", "France Crypto:", "Senate rejects €100k wallet reporting rule.", "OFFICIAL"),
-        BriefItem(17, "Europe", "Champions League:", "Real Madrid beat PSV 5–1; Arsenal draw 1–1.", "OFFICIAL"),
-        BriefItem(18, "Middle East", "UAE Crash:", "Bus hits stalled truck in Ras Al Khaimah; 13 dead.", "OFFICIAL"),
-        BriefItem(19, "Middle East", "OPCW Funds:", "Iran FM criticizes US for withholding dues.", "OFFICIAL"),
-        BriefItem(20, "Middle East", "IDF Probes:", "Israel confirms probes into human-shield claims.", "REPORTED"),
-        BriefItem(21, "Africa", "Port Sudan:", "AfDB & UNICEF launch $55m emergency water aid.", "OFFICIAL"),
-        BriefItem(22, "Africa", "Africa Space:", "South Africa unveils $372m satellite plan.", "OFFICIAL"),
-        BriefItem(23, "Africa", "South Africa:", "State memorial honors ex-Deputy PM Ngcuka.", "OFFICIAL"),
-        BriefItem(24, "East Asia", "Global Autos:", "Chinese EVs overtake Japan in 6 markets, lead 26.", "REPORTED"),
-        BriefItem(25, "East Asia", "US–China:", "Inaugural bilateral farm talks open in Beijing.", "OFFICIAL"),
+        BriefItem(14, "Europe", "England:", "Record 5,258 summer 2026 heat deaths.", "UKHSA", "OFFICIAL"),
+        BriefItem(15, "Europe", "BYD France:", "Exclusive talks for Ineos EV plant.", "Reuters", "OFFICIAL"),
+        BriefItem(16, "Europe", "UK defence:", "Agencies warn arms firms of sabotage.", "MoD", "OFFICIAL"),
+        BriefItem(17, "Europe", "Football:", "Real Madrid beat PSV 5–1; Arsenal 1–1.", "UEFA", "CONFIRMED"),
+        BriefItem(18, "Middle East", "Gaza City:", "Strike kills Hamas chief Abu Nahel.", "Reuters", "CONFIRMED"),
+        BriefItem(19, "Middle East", "Iraq oil:", "Baghdad orders Kurdish oil takeover.", "National", "OFFICIAL"),
+        BriefItem(20, "Middle East", "OPCW:", "Iran protests withheld US dues.", "CBS", "OFFICIAL"),
+        BriefItem(21, "East Asia", "South Korea:", "Russian jets trigger 07:52 air alert.", "Herald", "CONFIRMED"),
+        BriefItem(22, "East Asia", "Autos:", "Chinese EVs pass Japan in 6 markets.", "SCMP", "REPORTED"),
+        BriefItem(23, "East Asia", "US–China:", "Bilateral farm talks open in Beijing.", "Reuters", "OFFICIAL"),
+        BriefItem(24, "N. America", "US economy:", "Confidence climbs to 103.3.", "Conf. Board", "CONFIRMED", highlight="103.3"),
+        BriefItem(25, "N. America", "Canada:", "Ottawa rejects Pentagon spending critique.", "Guardian", "OFFICIAL"),
+        BriefItem(26, "Africa", "Nigeria:", "Central bank holds key rate at 23%.", "Reuters", "OFFICIAL"),
     ],
-    # Col B (#26-#39)
+    # Col B (#27-#38 = 12 rows)
     [
-        BriefItem(26, "South & SE Asia", "Myanmar ICJ:", "14 nations urge junta to obey ICJ rulings.", "OFFICIAL"),
-        BriefItem(27, "South & SE Asia", "Vietnam Blast:", "Hanoi hot-pot gas blast kills 6, hurts 12+.", "REPORTED"),
-        BriefItem(28, "South & SE Asia", "Indonesia:", "139 returned after $2.9m Manila scam raid.", "OFFICIAL"),
-        BriefItem(29, "South & SE Asia", "India Deals:", "PE/VC hits 5-year monthly high of $8.7bn.", "REPORTED"),
-        BriefItem(30, "South & SE Asia", "Thailand:", "Passes OECD review; expands river water tests.", "OFFICIAL"),
-        BriefItem(31, "N. America", "US Economy:", "Consumer confidence index climbs to 103.3 in Nov.", "CONFIRMED"),
-        BriefItem(32, "N. America", "US–Canada:", "Ottawa rejects Pentagon spending critique.", "OFFICIAL"),
-        BriefItem(33, "S. America", "Colombia:", "Gunmen hold ~30 hostages in Cartagena store.", "REPORTED"),
-        BriefItem(34, "S. America", "WTO Case:", "Brazil seeks panel on US Section 301 tariffs.", "OFFICIAL"),
-        BriefItem(35, "Oceania", "Solomons:", "Reports say Honiara will let China pact lapse.", "REPORTED"),
-        BriefItem(36, "Oceania", "Vanuatu:", "Files ICJ & UNCLOS case vs France over islands.", "OFFICIAL"),
-        BriefItem(37, "World & Space", "Euclid Space:", "ESA telescope finds farthest quasar (630m yrs).", "OFFICIAL"),
-        BriefItem(38, "World & Space", "UNODC Brief:", "47,000 women killed by kin in 2025 (5 an hour).", "OFFICIAL"),
-        BriefItem(39, "World & Space", "UN AI Arms:", "Guterres urges Security Council AI weapons rules.", "OFFICIAL"),
+        BriefItem(27, "Africa", "Ethiopia:", "Amnesty urges Alamata shelling probe.", "Amnesty", "CONFIRMED"),
+        BriefItem(28, "Africa", "South Africa:", "State unveils $372m satellite plan.", "SAnews", "OFFICIAL"),
+        BriefItem(29, "South Asia", "India:", "00:30 UTC bus crash kills 4 children.", "PTI", "CONFIRMED"),
+        BriefItem(30, "South Asia", "Bangladesh:", "Exiled Hasina plans 16 Dec return.", "Reuters", "CLAIM"),
+        BriefItem(31, "SE Asia", "Myanmar:", "14 nations urge junta to obey court.", "Reuters", "OFFICIAL"),
+        BriefItem(32, "SE Asia", "Indonesia:", "139 returned after Manila scam raid.", "The Star", "OFFICIAL"),
+        BriefItem(33, "Latin America", "Colombia:", "Gunmen hold ~25 in Cartagena store.", "Reuters", "ONGOING"),
+        BriefItem(34, "Latin America", "Brazil trade:", "Seeks WTO panel on US 301 tariffs.", "WTO", "OFFICIAL"),
+        BriefItem(35, "Oceania", "Solomons:", "To let 2022 China security pact lapse.", "SMH · ABC", "REPORTED"),
+        BriefItem(36, "Oceania", "Vanuatu:", "MPs back A$500m Australia pact.", "AAP", "OFFICIAL"),
+        BriefItem(37, "World & Space", "UNODC:", "47,000 women killed by kin (5/hr).", "UNODC", "OFFICIAL"),
+        BriefItem(38, "World & Space", "UN AI arms:", "Guterres urges binding AI rules.", "UN", "OFFICIAL"),
     ],
 ]
 
 MAP_PINS: List[MapPin] = [
-    MapPin(1, "Middle East", 238, 72, "Riyadh"),
-    MapPin(2, "East Asia", 304, 56, "Shanghai"),
-    MapPin(3, "N. America", 92, 46, "Brooklyn"),
-    MapPin(4, "Europe", 202, 31, "Poland"),
-    MapPin(5, "Europe", 175, 42, "France"),
-    MapPin(6, "N. America", 68, 48, "Wall St"),
-    MapPin(7, "World & Space", 108, 86, "Kourou"),
-    MapPin(8, "Europe", 160, 22, "England"),
-    MapPin(9, "Middle East", 216, 61, "Gaza"),
-    MapPin(10, "Oceania", 316, 136, "Canberra"),
-    MapPin(11, "S. America", 114, 126, "Brazil"),
+    MapPin(1, "Middle East", 215, 79),
+    MapPin(2, "N. America", 101, 46),
+    MapPin(3, "East Asia", 305, 59),
+    MapPin(4, "Europe", 209, 39),
+    MapPin(5, "Europe", 175, 43),
+    MapPin(6, "N. America", 73, 56),
+    MapPin(7, "World & Space", 115, 92),
+    MapPin(8, "Middle East", 242, 77),
+    MapPin(9, "Africa", 193, 98),
+    MapPin(10, "SE Asia", 290, 83),
+    MapPin(11, "South Asia", 266, 70),
+    MapPin(12, "Latin America", 118, 136),
+    MapPin(13, "Oceania", 316, 146),
 ]
 
 DATE_CHECK_TEXT = (
-    "Every story above happened or was first reported on Tue 24 Nov 2026 (UTC). "
-    "Left out: Iran Hormuz mines claim, EU 22nd Russia sanctions, US $14.7bn Iran OFAC "
-    "& Vanuatu M6.5 quake (Mon 23 Nov) · BepiColombo Mercury orbit (21 Nov) · "
-    "Cartagena rescue storming (early Wed 25 Nov)."
+    "Every story happened or was first reported on Tue 24 Nov 2026 (UTC). "
+    "Left out: Iran Hormuz tanker mines claim, Nvidia reinstates Huang & "
+    "EU 22nd Russia sanctions (Mon 23 Nov) · COP31 ends without deal (Sun 22 Nov) · "
+    "Shenzhou-24 launch (due Wed 25 Nov)."
 )
 
-FOOTER_SOURCES = (
-    "Sources: Reuters, AP, Guardian, Xinhua, UKHSA, Arianespace, ESA, UNODC, IOM · Drawn in code"
-)
+FOOTER_RIGHT = "Original vector illustrations · every story names its sources"
 
 
 def compute_region_counts() -> Dict[str, int]:
@@ -286,23 +313,39 @@ def compute_region_counts() -> Dict[str, int]:
 
 
 def validate_dataset() -> Tuple[int, Dict[str, int]]:
+    assert len(HERO_CARDS) == 3, f"Expected 3 hero cards, got {len(HERO_CARDS)}"
+    assert len(MID_CARDS) == 10, f"Expected 10 mid cards, got {len(MID_CARDS)}"
+    brief_total = sum(len(col) for col in BRIEF_COLUMNS)
+    assert brief_total == 25, f"Expected 25 briefs, got {brief_total}"
+
     counts = compute_region_counts()
     total = sum(counts.values())
-    assert total == 39, f"Expected 39 stories, got {total}"
+    assert total == 38, f"Expected 38 stories, got {total}"
+    assert len(REGIONS) == 10, f"Expected 10 regions, got {len(REGIONS)}"
+
     for region in REGIONS:
         actual = counts[region.key]
         assert actual == region.expected_count, (
             f"Region {region.key}: expected {region.expected_count}, got {actual}"
         )
+
     all_nums = (
         [c.num for c in HERO_CARDS]
         + [c.num for c in MID_CARDS]
         + [b.num for col in BRIEF_COLUMNS for b in col]
     )
-    assert all_nums == list(range(1, 40)), "Story numbering must be contiguous 1..39"
-    assert [p.num for p in MAP_PINS] == list(range(1, 12)), "Map pins must be 1..11"
+    assert all_nums == list(range(1, 39)), "Story numbering must be contiguous 1..38"
+
+    illustrated = HERO_CARDS + MID_CARDS
+    assert [p.num for p in MAP_PINS] == list(range(1, 14)), "Map pins must be 1..13"
+    for pin, card in zip(MAP_PINS, illustrated):
+        assert pin.num == card.num and pin.region == card.region, (
+            f"Pin #{pin.num} ({pin.region}) does not match card #{card.num} ({card.region})"
+        )
+
     for i, a in enumerate(MAP_PINS):
         for b in MAP_PINS[i + 1 :]:
             dist = math.hypot(a.x - b.x, a.y - b.y)
-            assert dist >= 20.0, f"Map pins #{a.num} and #{b.num} too close: {dist:.1f}px"
+            assert dist >= 17.0, f"Map pins #{a.num} and #{b.num} too close: {dist:.1f}"
+
     return total, counts

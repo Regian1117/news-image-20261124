@@ -7,18 +7,18 @@
 Editorial broadsheet frontpage generator for the **"Sum up 24 November's world news in one image"** competition, rendering a single lossless `1024×1024` RGB PNG (`entry.png`) covering **Tuesday 24 November 2026 (UTC)**.
 
 ### Highlights
-- **39 verified same-day stories** spanning **9 color-coded regions** (Europe, Middle East, South & SE Asia, N. America, World & Space, Africa, East Asia, S. America, Oceania) and **21 subject fields**, structured into 3 Hero cards, 8 Regional Feature cards, and 28 single-line dated briefs.
-- **Key numbers strip (`THE DAY IN NUMBERS`)** spotlighting 6 headline figures (`10 of 12`, `50,018`, `$41bn`, `5,258`, `36 sats`, `13 dead`).
-- **11 custom geometric SVG scenes** (`svg_scenes.py`) with dedicated left-side vector artwork strictly separated from high-contrast dark-navy callout pills and bold yellow sub-strips for clarity at full `1024px` and thumbnail scales.
-- **World locator map (`WHERE IT HAPPENED`)** plotting numbered region-colored pins `1–11` (`>= 20px` pairwise separation) with a pin index and 9-region legend.
-- **Chronological UTC ribbon** anchoring 7 ascending timestamps (`01:30` to `21:00` UTC).
-- **Epistemic confidence tags** (`CONFIRMED`, `OFFICIAL`, `REPORTED`, `CLAIM`) across cards and the footer legend.
-- **Explicit `DATE CHECK` exclusion bar** documenting adjacent-day events intentionally omitted to keep all 39 stories strictly dated to Tuesday 24 November 2026 (UTC).
+- **38 verified same-day stories** spanning **10 color-coded regions** (Europe, Middle East, East Asia, N. America, Africa, South Asia, SE Asia, Latin America, Oceania, World & Space) and **24 subject fields**, structured into 3 Hero cards, 10 Regional Feature cards (`5×2` grid), and 25 upright source-attributed single-line briefs.
+- **13 full-bleed editorial vector illustrations** (`svg_scenes.py`) with corner-tucked circular number pins (`1–13`) and story-specific artwork tailored for crisp full-size and `300px` thumbnail legibility.
+- **Light-mode chronological UTC ribbon** anchoring 7 ascending timestamps (`01:00` to `21:00` UTC).
+- **Key numbers strip (`IN NUMBERS`)** spotlighting 6 headline figures (`11 hurt`, `10 of 12`, `$41bn`, `50,018`, `36 sats`, `13 dead`).
+- **Full-world locator map (`WHERE IT HAPPENED`)** plotting numbered region-colored pins `1–13` (`>= 17` SVG unit pairwise separation) across clearly framed continents with a 2-column 10-region legend.
+- **Epistemic confidence tags** (`CONFIRMED`, `OFFICIAL`, `REPORTED`, `CLAIM`, `ONGOING`) across illustrated cards, compact brief status markers (`C`/`O`/`R`/`CL`/`ON`), and the footer legend.
+- **Explicit `DATE CHECK` exclusion bar** documenting adjacent-day events intentionally omitted to keep all 38 stories strictly dated to Tuesday 24 November 2026 (UTC).
 
 ### Files
 - `main.ts` — Node 22 standard-library entrypoint (`node:fs`, `node:path`, `node:crypto`) that validates `./entry.png` (PNG signature, `IHDR` dimensions `1..1024`, size `<= 1 MiB`), copies it to `${MAKEFUN_OUTPUT_DIR || '/output'}/entry.png`, and verifies byte-for-byte SHA-256 integrity.
-- `entry.png` — Pre-rendered `1024×1024` lossless RGB PNG (`~243 KiB`).
-- `data.py`, `svg_scenes.py`, `build_frontpage.py` — Deterministic HTML/SVG broadsheet source modules rendered via headless Chromium with automated DOM overflow, pill-padding, and map-pin-separation audits plus Pillow lossless RGB optimization.
+- `entry.png` — Pre-rendered `1024×1024` lossless RGB PNG (`~242 KiB`).
+- `data.py`, `svg_scenes.py`, `build_frontpage.py` — Deterministic HTML/SVG broadsheet source modules rendered via headless Chromium with automated DOM overflow, pill-text containment, and map-pin-separation audits plus Pillow lossless RGB optimization.
 
 ## Run it
 
