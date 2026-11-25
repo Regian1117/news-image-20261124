@@ -114,7 +114,7 @@ HERO_CARDS: List[CardItem] = [
         epistemic="CONFIRMED",
         sources="Reuters · Al Arabiya",
         headline="Houthi strike hits Riyadh's tallest tower; 11 hurt",
-        deck="Second strike in a week hits financial tower; Saudi coalition bombs Yemen's Hodeidah port.",
+        deck="Second strike in a week hits financial tower; Saudi coalition blames Houthis and bombs Hodeidah port.",
         scene_id=1,
     ),
     CardItem(
@@ -147,7 +147,7 @@ MID_CARDS: List[CardItem] = [
         epistemic="CONFIRMED",
         sources="Reuters · Kyiv Ind.",
         headline="Russian strikes kill 9 across Ukraine",
-        deck="Zaporizhzhia dawn raid hits homes (2 dead, 40+ hurt) in daily toll.",
+        deck="Zaporizhzhia homes hit at dawn, hurting 40+ in nationwide tally.",
         scene_id=4,
     ),
     CardItem(
@@ -157,7 +157,7 @@ MID_CARDS: List[CardItem] = [
         epistemic="OFFICIAL",
         sources="Sanofi · Reuters",
         headline="Sanofi agrees $41bn deal for Insmed",
-        deck="All-cash buyout expands French firm's lung-drug pipeline.",
+        deck="Cash buyout expands French firm's lung-drug pipeline.",
         scene_id=5,
     ),
     CardItem(
@@ -167,7 +167,7 @@ MID_CARDS: List[CardItem] = [
         epistemic="CONFIRMED",
         sources="Reuters · ABC",
         headline="Dow closes past 50,000; Nasdaq dips 1.5%",
-        deck="Ends at 50,018 at 21:00 UTC as chip stocks slide.",
+        deck="Blue-chip index ends at 50,018 as chip stocks pull back.",
         scene_id=6,
     ),
     CardItem(
@@ -177,7 +177,7 @@ MID_CARDS: List[CardItem] = [
         epistemic="CONFIRMED",
         sources="Arianespace · Xinhua",
         headline="Ariane 6 lofts 36 Amazon satellites",
-        deck="Tenth flight lifts off at 11:14 UTC from French Guiana.",
+        deck="Tenth flight lifts off from French Guiana with broadband craft.",
         scene_id=7,
     ),
     CardItem(
@@ -207,7 +207,7 @@ MID_CARDS: List[CardItem] = [
         epistemic="CONFIRMED",
         sources="VnExpress · AP",
         headline="Gas blast at Hanoi eatery kills 6",
-        deck="01:00 UTC explosion hurts 12+ and collapses storefront.",
+        deck="Gas explosion injures 12+ and collapses restaurant front.",
         scene_id=10,
     ),
     CardItem(
@@ -217,7 +217,7 @@ MID_CARDS: List[CardItem] = [
         epistemic="CONFIRMED",
         sources="USGS · AP",
         headline="M5.3 quake shakes eastern Nepal",
-        deck="01:32 UTC tremor felt near Tibet border; no casualties.",
+        deck="Shallow tremor felt near Tibet border; no casualties reported.",
         scene_id=11,
     ),
     CardItem(

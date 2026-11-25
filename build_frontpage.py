@@ -669,13 +669,13 @@ def build_html() -> str:
   .map-legend {{
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 3px 8px;
+    gap: 3px 6px;
     padding-top: 4px;
     border-top: 1px solid #E2DDD2;
     flex-shrink: 0;
   }}
   .ml-item {{
-    display: flex;
+    display: inline-flex;
     align-items: center;
     gap: 4px;
     font-size: 8.2px;
@@ -690,8 +690,6 @@ def build_html() -> str:
     flex-shrink: 0;
   }}
   .ml-name {{
-    flex: 1;
-    min-width: 0;
     letter-spacing: 0.1px;
   }}
   .ml-cnt {{
