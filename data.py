@@ -50,12 +50,12 @@ REGIONS: List[RegionMeta] = [
     RegionMeta("Europe", "EUROPE", "#1E3A8A", 6),
     RegionMeta("Middle East", "MIDDLE EAST", "#C2410C", 5),
     RegionMeta("East Asia", "EAST ASIA", "#B91C1C", 4),
-    RegionMeta("N. America", "N. AMERICA", "#6D28D9", 4),
+    RegionMeta("N. America", "NORTH AMERICA", "#6D28D9", 4),
     RegionMeta("Africa", "AFRICA", "#15803D", 4),
+    RegionMeta("LatAm", "LATIN AMERICA", "#9D174D", 3),
     RegionMeta("South Asia", "SOUTH ASIA", "#0F766E", 3),
-    RegionMeta("SE Asia", "SE ASIA", "#0E7490", 3),
-    RegionMeta("LatAm", "LATAM", "#9D174D", 3),
     RegionMeta("Oceania", "OCEANIA", "#0369A1", 3),
+    RegionMeta("SE Asia", "SE ASIA", "#0E7490", 3),
     RegionMeta("World", "WORLD", "#334155", 3),
 ]
 
@@ -82,9 +82,9 @@ EDITION_DATE_SHORT = "TUE 24 NOV 2026 (UTC)"
 FIELD_COUNT = 25
 
 SUBHEAD = (
-    "Riyadh tower hit; 11 hurt · "
+    "China probes Shanghai chief Chen Jining · "
     "US jury convicts Huawei on 10 of 12 counts · "
-    "China probes Shanghai chief Chen Jining."
+    "Russian strikes kill 9 in Ukraine."
 )
 
 TIMELINE_ANCHORS: List[Tuple[str, str]] = [
@@ -99,22 +99,22 @@ TIMELINE_ANCHORS: List[Tuple[str, str]] = [
 
 KEY_NUMBERS: List[Tuple[str, str]] = [
     ("11 hurt", "Riyadh tower strike"),
-    ("10 of 12", "Huawei guilty counts"),
     ("$41bn", "Sanofi buys Insmed"),
-    ("50,018", "Dow closes past 50k"),
-    ("36 sats", "Ariane 6 Amazon Leo"),
+    ("50,018", "Dow record close"),
+    ("36", "Amazon Leo satellites"),
     ("13 dead", "UAE bus-truck crash"),
+    ("20,000", "Brazil storm displaced"),
 ]
 
 HERO_CARDS: List[CardItem] = [
     CardItem(
         num=1,
-        region="Middle East",
-        kicker="RIYADH · WAR",
-        epistemic="CONFIRMED",
-        sources="Reuters · Al Arabiya",
-        headline="Houthi strike hits Riyadh's tallest tower; 11 hurt",
-        deck="Second strike in a week hits financial tower; Saudi coalition blames Houthis and bombs Hodeidah port.",
+        region="East Asia",
+        kicker="SHANGHAI · POLITICS",
+        epistemic="OFFICIAL",
+        sources="Reuters · CNN",
+        headline="China probes Shanghai party chief Chen Jining",
+        deck="Politburo member, 62, investigated for serious violations — fourth senior leader probed this term.",
         scene_id=1,
     ),
     CardItem(
@@ -124,17 +124,17 @@ HERO_CARDS: List[CardItem] = [
         epistemic="CONFIRMED",
         sources="Reuters · AP",
         headline="US jury convicts Huawei on 10 of 12 counts",
-        deck="Brooklyn federal verdict cites bank fraud, sanctions and trade secrets; cleared of racketeering.",
+        deck="New York federal jury finds guilt on bank fraud, sanctions and trade secrets; cleared of racketeering.",
         scene_id=2,
     ),
     CardItem(
         num=3,
-        region="East Asia",
-        kicker="SHANGHAI · POLITICS",
-        epistemic="OFFICIAL",
-        sources="Xinhua · Reuters",
-        headline="China probes Shanghai party chief Chen Jining",
-        deck="Politburo member, 62, investigated for serious violations — fourth senior leader probed this term.",
+        region="Europe",
+        kicker="UKRAINE · WAR",
+        epistemic="CONFIRMED",
+        sources="Reuters · Kyiv Ind.",
+        headline="Russian strikes kill 9 across Ukraine",
+        deck="Dawn missile and drone raids hit Zaporizhzhia homes, injuring 40+ in nationwide tally.",
         scene_id=3,
     ),
 ]
@@ -142,12 +142,12 @@ HERO_CARDS: List[CardItem] = [
 MID_CARDS: List[CardItem] = [
     CardItem(
         num=4,
-        region="Europe",
-        kicker="UKRAINE · WAR",
-        epistemic="CONFIRMED",
-        sources="Reuters · Kyiv Ind.",
-        headline="Russian strikes kill 9 across Ukraine",
-        deck="Zaporizhzhia homes hit at dawn, hurting 40+ in nationwide tally.",
+        region="Middle East",
+        kicker="RIYADH · WAR",
+        epistemic="REPORTED",
+        sources="Al Arabiya",
+        headline="Yemen's Houthis hit Riyadh tower",
+        deck="Saudi coalition blames Houthis for 11 hurt in tower strike; bombs Hodeidah.",
         scene_id=4,
     ),
     CardItem(
@@ -269,7 +269,7 @@ BRIEF_COLUMNS: List[List[BriefItem]] = [
         BriefItem(32, "SE Asia", "Indonesia:", "139 returned after Manila scam raid.", "The Star", "OFFICIAL"),
         BriefItem(33, "LatAm", "Colombia:", "Gunmen hold ~25 in Cartagena store.", "Reuters", "ONGOING"),
         BriefItem(34, "LatAm", "Brazil trade:", "Seeks WTO panel on US 301 tariffs.", "WTO", "OFFICIAL"),
-        BriefItem(35, "Oceania", "Solomons:", "To let 2022 China security pact lapse.", "SMH · ABC", "REPORTED"),
+        BriefItem(35, "Oceania", "Solomons:", "To let 2022 China security pact lapse.", "SMH", "REPORTED"),
         BriefItem(36, "Oceania", "Vanuatu:", "Lawmakers back A$500m Australia pact.", "AAP", "OFFICIAL"),
         BriefItem(37, "World", "UNODC:", "47,000 women killed by kin (5 an hour).", "UNODC", "OFFICIAL", highlight="47,000"),
         BriefItem(38, "World", "UN AI arms:", "Guterres urges binding AI rules.", "UN", "OFFICIAL"),
@@ -277,10 +277,10 @@ BRIEF_COLUMNS: List[List[BriefItem]] = [
 ]
 
 MAP_PINS: List[MapPin] = [
-    MapPin(1, "Middle East", 215, 79),
-    MapPin(2, "N. America", 101, 46),
-    MapPin(3, "East Asia", 305, 59),
-    MapPin(4, "Europe", 209, 39),
+    MapPin(1, "East Asia", 305, 53),
+    MapPin(2, "N. America", 101, 41),
+    MapPin(3, "Europe", 209, 35),
+    MapPin(4, "Middle East", 215, 71),
     MapPin(5, "Europe", 175, 43),
     MapPin(6, "N. America", 73, 56),
     MapPin(7, "World", 115, 92),

@@ -37,6 +37,7 @@ def _pill(
     stroke_w: float = 1.0,
     letter_spacing: float = 0.2,
     y_text: float | None = None,
+    font_weight: int = 900,
 ) -> str:
     stroke_attr = f' stroke="{stroke}" stroke-width="{stroke_w}"' if stroke else ""
     cx = x + w / 2.0
@@ -46,16 +47,16 @@ def _pill(
         f'rx="{rx}" fill="{fill}"{stroke_attr}/>'
         f'<text class="callout-text" data-pill-for="{pid}" x="{cx:.1f}" y="{ty:.1f}" '
         f'text-anchor="middle" font-family="{FONT_SANS}" font-size="{font_size}" '
-        f'font-weight="900" letter-spacing="{letter_spacing}" fill="{text_fill}">{escape(text)}</text>'
+        f'font-weight="{font_weight}" letter-spacing="{letter_spacing}" fill="{text_fill}">{escape(text)}</text>'
     )
 
 
 def _wrap_hero(num: int, region: str, bg: str, frame: str, body: str, label: str) -> str:
     return (
-        f'<svg class="scene-svg hero-svg" viewBox="0 0 314 86" width="314" height="86" '
+        f'<svg class="scene-svg hero-svg" viewBox="0 0 314 90" width="314" height="90" '
         f'preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg" '
         f'role="img" aria-label="{escape(label)}">'
-        f'<rect x="0.5" y="0.5" width="313" height="85" rx="3" fill="{bg}" stroke="{frame}" stroke-width="1"/>'
+        f'<rect x="0.5" y="0.5" width="313" height="89" rx="3" fill="{bg}" stroke="{frame}" stroke-width="1"/>'
         f'{body}'
         f'{_corner_pin(num, region)}'
         f'</svg>'
@@ -78,129 +79,125 @@ def build_scenes() -> Dict[int, str]:
     card_regions: Dict[int, str] = {c.num: c.region for c in HERO_CARDS + MID_CARDS}
     scenes: Dict[int, str] = {}
 
-    # #1 Hero (314x86): Pale ocean blue #DCEEF9 surround around Arabian Peninsula #EFC8A5 (border #B45309)
+    # #1 Hero (314x90): Shanghai Pudong skyline + Oriental Pearl Tower + magnifying-glass portrait
     body_1 = (
-        '<rect x="1" y="1" width="312" height="84" rx="2.5" fill="#DCEEF9"/>'
-        # Arabian Peninsula landmass
-        '<path d="M 16,1 L 130,1 L 154,14 L 182,40 L 188,58 L 166,76 L 122,85 L 48,85 L 30,58 L 14,28 Z" '
-        'fill="#EFC8A5" stroke="#B45309" stroke-width="1.1"/>'
-        # Subtle highland interior contour
-        '<path d="M 38,14 L 122,14 L 160,44 L 140,72 L 64,72 Z" fill="#F5D9BC" opacity="0.65"/>'
-        # Map labels cleanly separated from arc, tower, and pin #1
-        f'<text x="86" y="24" text-anchor="middle" font-family="{FONT_SANS}" font-size="8.2" '
-        'font-weight="900" letter-spacing="0.45" fill="#78350F">SAUDI ARABIA</text>'
-        f'<text x="64" y="77" text-anchor="middle" font-family="{FONT_SANS}" font-size="8.2" '
-        'font-weight="900" letter-spacing="0.45" fill="#9A3412">YEMEN</text>'
-        # Riyadh skyline cluster
-        '<rect x="122" y="42" width="11" height="26" fill="#475569"/>'
-        '<polygon points="136,68 136,20 147,13 156,22 156,68" fill="#1E293B"/>'
-        '<rect x="140" y="26" width="3.5" height="4.5" fill="#93C5FD"/>'
-        '<rect x="147" y="26" width="3.5" height="4.5" fill="#FDE68A"/>'
-        '<rect x="140" y="36" width="3.5" height="4.5" fill="#93C5FD"/>'
-        '<rect x="147" y="36" width="3.5" height="4.5" fill="#93C5FD"/>'
-        '<rect x="140" y="46" width="3.5" height="4.5" fill="#FDE68A"/>'
-        '<rect x="159" y="39" width="12" height="29" fill="#334155"/>'
-        # Red missile trajectory arc well clear of both labels
-        '<path d="M 94,74 Q 112,38 143,27" fill="none" stroke="#DC2626" stroke-width="2.3" stroke-dasharray="4 2.2"/>'
-        '<circle cx="94" cy="74" r="3" fill="#B91C1C"/>'
-        # Impact burst on tower
-        '<polygon points="146,16 149,22 156,20 152,27 159,31 151,33 153,40 146,34 140,39 142,32 134,29 141,25 140,18 144,22" fill="#DC2626"/>'
-        '<polygon points="146,21 148,25 152,24 150,28 153,31 149,31 149,34 146,32 143,33 144,30 141,29 144,27 143,23 145,25" fill="#FACC15"/>'
-        + _pill("p1", 196, 13, 108, 27, "#B91C1C", "11 HURT", "#FFFFFF", 13.4, rx=3.5, stroke="#7F1D1D", stroke_w=0.9)
-        + _pill("p2", 196, 46, 108, 26, "#FFFFFF", "HODEIDAH HIT", "#991B1B", 10.6, rx=3.0, stroke="#B91C1C", stroke_w=1.2)
+        '<rect x="1" y="64" width="312" height="25" fill="#FECACA" opacity="0.72"/>'
+        # Shanghai Pudong skyline
+        '<rect x="22" y="48" width="12" height="32" fill="#64748B"/>'
+        '<line x1="47" y1="13" x2="47" y2="80" stroke="#334155" stroke-width="2.2"/>'
+        '<polygon points="47,55 38,80 42,80 47,63 52,80 56,80" fill="#334155"/>'
+        '<circle cx="47" cy="31" r="5.5" fill="#B91C1C" stroke="#1E293B" stroke-width="1"/>'
+        '<circle cx="47" cy="50" r="7.5" fill="#B91C1C" stroke="#1E293B" stroke-width="1"/>'
+        '<polygon points="64,80 68,16 77,12 82,80" fill="#1E293B"/>'
+        '<rect x="86" y="28" width="15" height="52" fill="#334155"/>'
+        '<rect x="89.5" y="33" width="8" height="4.5" fill="#FEE2E2"/>'
+        '<rect x="104" y="45" width="11" height="35" fill="#475569"/>'
+        # Circular magnifying-glass portrait
+        '<circle cx="144" cy="42" r="23.5" fill="#FFFFFF" stroke="#0F172A" stroke-width="3.2"/>'
+        '<circle cx="144" cy="42" r="19.5" fill="#FEF2F2" stroke="#DC2626" stroke-width="1" stroke-dasharray="3 2"/>'
+        '<circle cx="144" cy="35.5" r="7" fill="#1E293B"/>'
+        '<path d="M 130,57 C 130,47 136,44 144,44 C 152,44 158,47 158,57 Z" fill="#1E293B"/>'
+        '<polygon points="142,45 146,45 145,54 144,56 143,54" fill="#DC2626"/>'
+        '<line x1="161" y1="59" x2="175" y2="77" stroke="#0F172A" stroke-width="5.5" stroke-linecap="round"/>'
+        '<line x1="161" y1="59" x2="175" y2="77" stroke="#B91C1C" stroke-width="2.2" stroke-linecap="round"/>'
+        + _pill("p1", 188, 15, 116, 28, "#991B1B", "UNDER PROBE", "#FFFFFF", 12.2, rx=3.5, stroke="#450A0A", stroke_w=0.9)
+        + _pill("p2", 188, 49, 116, 27, "#FFFFFF", "CHEN JINING", "#0F172A", 11.4, rx=3.0, stroke="#991B1B", stroke_w=1.2)
     )
-    scenes[1] = _wrap_hero(1, card_regions[1], "#DCEEF9", "#B45309", body_1, "Riyadh strike 11 hurt, Hodeidah hit")
+    scenes[1] = _wrap_hero(1, card_regions[1], "#FEE2E2", "#DC2626", body_1, "Shanghai party chief Chen Jining under probe")
 
-    # #2 Hero (314x86): Widened neoclassical courthouse columns across #EDE9FE + wooden gavel + GUILTY / 10 OF 12
+    # #2 Hero (314x90): Neoclassical courthouse columns on #EDE9FE + tilted wooden gavel + GUILTY / 10 OF 12
     body_2 = (
-        '<rect x="1" y="63" width="312" height="22" fill="#DDD6FE" opacity="0.72"/>'
-        # Widened neoclassical courthouse facade (x=20..142)
-        '<polygon points="81,10 22,29 140,29" fill="#5B21B6" stroke="#1E1B4B" stroke-width="1.3"/>'
-        '<circle cx="81" cy="21" r="3.2" fill="#FDE047"/>'
-        '<rect x="24" y="29" width="114" height="4.5" fill="#312E81"/>'
-        '<rect x="29" y="33.5" width="10" height="33" fill="#FFFFFF" stroke="#6D28D9" stroke-width="1.1"/>'
-        '<rect x="49" y="33.5" width="10" height="33" fill="#FFFFFF" stroke="#6D28D9" stroke-width="1.1"/>'
-        '<rect x="69" y="33.5" width="10" height="33" fill="#FFFFFF" stroke="#6D28D9" stroke-width="1.1"/>'
-        '<rect x="89" y="33.5" width="10" height="33" fill="#FFFFFF" stroke="#6D28D9" stroke-width="1.1"/>'
-        '<rect x="109" y="33.5" width="10" height="33" fill="#FFFFFF" stroke="#6D28D9" stroke-width="1.1"/>'
-        '<rect x="125" y="33.5" width="8" height="33" fill="#FFFFFF" stroke="#6D28D9" stroke-width="1.1"/>'
-        '<rect x="20" y="66.5" width="122" height="4.5" fill="#4C1D95"/>'
-        '<rect x="15" y="71" width="132" height="6" rx="1" fill="#1E1B4B"/>'
-        # Wooden gavel & strike block
-        '<rect x="147" y="67" width="38" height="8.5" rx="2" fill="#4C1D95" stroke="#1E1B4B" stroke-width="1.2"/>'
-        '<g transform="rotate(-32 162 40)">'
-        '<rect x="148" y="26" width="27" height="14.5" rx="2.5" fill="#78350F" stroke="#0F172A" stroke-width="1.3"/>'
-        '<rect x="150.5" y="25" width="4" height="16.5" rx="1" fill="#FDE047"/>'
-        '<rect x="168.5" y="25" width="4" height="16.5" rx="1" fill="#FDE047"/>'
-        '<rect x="159" y="40.5" width="5.2" height="26" rx="1.5" fill="#92400E" stroke="#0F172A" stroke-width="1"/>'
+        '<rect x="1" y="66" width="312" height="23" fill="#DDD6FE" opacity="0.72"/>'
+        '<polygon points="81,11 22,30 140,30" fill="#5B21B6" stroke="#1E1B4B" stroke-width="1.3"/>'
+        '<circle cx="81" cy="22" r="3.2" fill="#FDE047"/>'
+        '<rect x="24" y="30" width="114" height="4.5" fill="#312E81"/>'
+        '<rect x="29" y="34.5" width="10" height="35" fill="#FFFFFF" stroke="#6D28D9" stroke-width="1.1"/>'
+        '<rect x="49" y="34.5" width="10" height="35" fill="#FFFFFF" stroke="#6D28D9" stroke-width="1.1"/>'
+        '<rect x="69" y="34.5" width="10" height="35" fill="#FFFFFF" stroke="#6D28D9" stroke-width="1.1"/>'
+        '<rect x="89" y="34.5" width="10" height="35" fill="#FFFFFF" stroke="#6D28D9" stroke-width="1.1"/>'
+        '<rect x="109" y="34.5" width="10" height="35" fill="#FFFFFF" stroke="#6D28D9" stroke-width="1.1"/>'
+        '<rect x="125" y="34.5" width="8" height="35" fill="#FFFFFF" stroke="#6D28D9" stroke-width="1.1"/>'
+        '<rect x="20" y="69.5" width="122" height="4.5" fill="#4C1D95"/>'
+        '<rect x="15" y="74" width="132" height="6" rx="1" fill="#1E1B4B"/>'
+        '<rect x="147" y="70" width="38" height="8.5" rx="2" fill="#4C1D95" stroke="#1E1B4B" stroke-width="1.2"/>'
+        '<g transform="rotate(-32 162 42)">'
+        '<rect x="148" y="28" width="27" height="14.5" rx="2.5" fill="#78350F" stroke="#0F172A" stroke-width="1.3"/>'
+        '<rect x="150.5" y="27" width="4" height="16.5" rx="1" fill="#FDE047"/>'
+        '<rect x="168.5" y="27" width="4" height="16.5" rx="1" fill="#FDE047"/>'
+        '<rect x="159" y="42.5" width="5.2" height="27" rx="1.5" fill="#92400E" stroke="#0F172A" stroke-width="1"/>'
         '</g>'
-        + _pill("p1", 196, 13, 108, 27, "#7F1D1D", "GUILTY", "#FFFFFF", 13.6, rx=3.5, stroke="#450A0A", stroke_w=0.9)
-        + _pill("p2", 196, 46, 108, 26, "#1E1B4B", "10 OF 12", "#FDE047", 12.6, rx=3.0, stroke="#6D28D9", stroke_w=1.0)
+        + _pill("p1", 196, 15, 108, 28, "#7F1D1D", "GUILTY", "#FFFFFF", 13.6, rx=3.5, stroke="#450A0A", stroke_w=0.9)
+        + _pill("p2", 196, 49, 108, 27, "#1E1B4B", "10 OF 12", "#FFFFFF", 12.6, rx=3.0, stroke="#6D28D9", stroke_w=1.0, letter_spacing=0.6, font_weight=800)
     )
     scenes[2] = _wrap_hero(2, card_regions[2], "#EDE9FE", "#7C3AED", body_2, "Huawei guilty 10 of 12 counts")
 
-    # #3 Hero (314x86): Full-bleed #FEE2E2 Shanghai skyline + magnifying glass portrait + UNDER PROBE / CHEN JINING
+    # #3 Hero (314x90): Darkened Ukrainian apartment skyline on #E2E8F0 with dawn burst + 9 KILLED / 40+ HURT
     body_3 = (
-        '<rect x="1" y="61" width="312" height="24" fill="#FECACA" opacity="0.72"/>'
-        # Shanghai Pudong skyline
-        '<rect x="22" y="45" width="12" height="31" fill="#64748B"/>'
-        '<line x1="47" y1="12" x2="47" y2="76" stroke="#334155" stroke-width="2.2"/>'
-        '<polygon points="47,52 38,76 42,76 47,60 52,76 56,76" fill="#334155"/>'
-        '<circle cx="47" cy="30" r="5.5" fill="#B91C1C" stroke="#1E293B" stroke-width="1"/>'
-        '<circle cx="47" cy="48" r="7.5" fill="#B91C1C" stroke="#1E293B" stroke-width="1"/>'
-        '<polygon points="64,76 68,15 77,11 82,76" fill="#1E293B"/>'
-        '<rect x="86" y="26" width="15" height="50" fill="#334155"/>'
-        '<rect x="89.5" y="31" width="8" height="4.5" fill="#FEE2E2"/>'
-        '<rect x="104" y="43" width="11" height="33" fill="#475569"/>'
-        # Magnifying glass portrait
-        '<circle cx="144" cy="40" r="23" fill="#FFFFFF" stroke="#0F172A" stroke-width="3.2"/>'
-        '<circle cx="144" cy="40" r="19.2" fill="#FEF2F2" stroke="#DC2626" stroke-width="1" stroke-dasharray="3 2"/>'
-        '<circle cx="144" cy="33.5" r="6.8" fill="#1E293B"/>'
-        '<path d="M 130.5,54.5 C 130.5,45 136,42 144,42 C 152,42 157.5,45 157.5,54.5 Z" fill="#1E293B"/>'
-        '<polygon points="142,43 146,43 145,51.5 144,53.5 143,51.5" fill="#DC2626"/>'
-        '<line x1="160.5" y1="56.5" x2="175" y2="74" stroke="#0F172A" stroke-width="5.5" stroke-linecap="round"/>'
-        '<line x1="160.5" y1="56.5" x2="175" y2="74" stroke="#B91C1C" stroke-width="2.2" stroke-linecap="round"/>'
-        + _pill("p1", 188, 13, 116, 27, "#991B1B", "UNDER PROBE", "#FFFFFF", 12.4, rx=3.5, stroke="#450A0A", stroke_w=0.9)
-        + _pill("p2", 188, 46, 116, 26, "#FFFFFF", "CHEN JINING", "#0F172A", 11.4, rx=3.0, stroke="#991B1B", stroke_w=1.2)
+        '<rect x="1" y="64" width="312" height="25" fill="#CBD5E1" opacity="0.72"/>'
+        # Smoke plumes
+        '<circle cx="94" cy="24" r="12" fill="#64748B" opacity="0.48"/>'
+        '<circle cx="110" cy="16" r="10" fill="#475569" opacity="0.4"/>'
+        '<circle cx="128" cy="14" r="8" fill="#94A3B8" opacity="0.35"/>'
+        '<circle cx="152" cy="26" r="9" fill="#64748B" opacity="0.32"/>'
+        # Darkened Ukrainian apartment skyline (x=18..182)
+        '<rect x="18" y="44" width="24" height="38" fill="#334155"/>'
+        '<rect x="23" y="50" width="4.5" height="5" fill="#CBD5E1"/>'
+        '<rect x="32" y="50" width="4.5" height="5" fill="#FDE047"/>'
+        '<rect x="23" y="60" width="4.5" height="5" fill="#94A3B8"/>'
+        '<rect x="32" y="60" width="4.5" height="5" fill="#CBD5E1"/>'
+        '<rect x="46" y="30" width="30" height="52" fill="#1E293B"/>'
+        '<rect x="52" y="38" width="5" height="5.5" fill="#93C5FD"/>'
+        '<rect x="62" y="38" width="5" height="5.5" fill="#FDE047"/>'
+        '<rect x="52" y="49" width="5" height="5.5" fill="#CBD5E1"/>'
+        '<rect x="62" y="49" width="5" height="5.5" fill="#93C5FD"/>'
+        '<rect x="52" y="60" width="5" height="5.5" fill="#FDE047"/>'
+        '<rect x="80" y="23" width="34" height="59" fill="#0F172A"/>'
+        '<rect x="86" y="33" width="5.5" height="6" fill="#FDE047"/>'
+        '<rect x="97" y="33" width="5.5" height="6" fill="#CBD5E1"/>'
+        '<rect x="86" y="45" width="5.5" height="6" fill="#93C5FD"/>'
+        '<rect x="97" y="45" width="5.5" height="6" fill="#FDE047"/>'
+        '<rect x="86" y="57" width="5.5" height="6" fill="#CBD5E1"/>'
+        '<rect x="118" y="36" width="28" height="46" fill="#1E293B"/>'
+        '<rect x="124" y="43" width="4.5" height="5" fill="#CBD5E1"/>'
+        '<rect x="134" y="43" width="4.5" height="5" fill="#FDE047"/>'
+        '<rect x="124" y="54" width="4.5" height="5" fill="#93C5FD"/>'
+        '<rect x="150" y="46" width="28" height="36" fill="#334155"/>'
+        '<rect x="156" y="53" width="4.5" height="5" fill="#CBD5E1"/>'
+        '<rect x="166" y="53" width="4.5" height="5" fill="#FDE047"/>'
+        # Dawn explosion burst on center apartment block
+        '<polygon points="96,13 101,24 113,20 105,30 116,37 103,38 106,49 95,41 85,48 88,37 76,34 87,28 84,18 93,23" fill="#DC2626"/>'
+        '<polygon points="96,20 99,27 106,25 102,31 108,35 100,36 101,42 95,38 90,41 91,35 85,33 91,30 90,24 94,27" fill="#FACC15"/>'
+        + _pill("p1", 196, 15, 108, 28, "#991B1B", "9 KILLED", "#FFFFFF", 13.2, rx=3.5, stroke="#450A0A", stroke_w=0.9)
+        + _pill("p2", 196, 49, 108, 27, "#FFFFFF", "40+ HURT", "#991B1B", 12.2, rx=3.0, stroke="#DC2626", stroke_w=1.2)
     )
-    scenes[3] = _wrap_hero(3, card_regions[3], "#FEE2E2", "#DC2626", body_3, "Shanghai party chief Chen Jining under probe")
+    scenes[3] = _wrap_hero(3, card_regions[3], "#E2E8F0", "#64748B", body_3, "Ukraine strikes 9 killed, 40+ hurt")
 
-    # #4 Mid (186x50): Open-canvas smoky Ukraine apartment skyline across width + top-right 9 KILLED
+    # #4 Mid (186x50): Arabian Peninsula map (#DCEEF9 ocean, #EFC8A5 land SAUDI/YEMEN) + arc to burning Riyadh tower + 11 HURT
     body_4 = (
-        '<rect x="1" y="38" width="184" height="11" fill="#CBD5E1" opacity="0.7"/>'
-        # Rising smoke plumes across center-left & right
-        '<circle cx="54" cy="18" r="8" fill="#64748B" opacity="0.45"/>'
-        '<circle cx="65" cy="12" r="6.5" fill="#475569" opacity="0.38"/>'
-        '<circle cx="78" cy="10" r="5" fill="#94A3B8" opacity="0.35"/>'
-        '<circle cx="142" cy="30" r="6" fill="#64748B" opacity="0.3"/>'
-        # Full-width apartment skyline
-        '<rect x="14" y="29" width="18" height="20" fill="#475569"/>'
-        '<rect x="18" y="33" width="3" height="3" fill="#E2E8F0"/>'
-        '<rect x="24" y="33" width="3" height="3" fill="#FDE047"/>'
-        '<rect x="36" y="20" width="22" height="29" fill="#1E293B"/>'
-        '<rect x="40" y="25" width="3.5" height="3.5" fill="#93C5FD"/>'
-        '<rect x="47" y="25" width="3.5" height="3.5" fill="#FDE047"/>'
-        '<rect x="40" y="33" width="3.5" height="3.5" fill="#E2E8F0"/>'
-        '<rect x="47" y="33" width="3.5" height="3.5" fill="#E2E8F0"/>'
-        '<rect x="62" y="25" width="20" height="24" fill="#334155"/>'
-        '<rect x="66" y="30" width="3" height="3" fill="#FDE047"/>'
-        '<rect x="73" y="30" width="3" height="3" fill="#E2E8F0"/>'
-        '<rect x="86" y="28" width="22" height="21" fill="#475569"/>'
-        '<rect x="91" y="33" width="3" height="3" fill="#E2E8F0"/>'
-        '<rect x="98" y="33" width="3" height="3" fill="#93C5FD"/>'
-        '<rect x="112" y="31" width="24" height="18" fill="#334155"/>'
-        '<rect x="117" y="36" width="3" height="3" fill="#FDE047"/>'
-        '<rect x="125" y="36" width="3" height="3" fill="#E2E8F0"/>'
-        '<rect x="140" y="29" width="20" height="20" fill="#1E293B"/>'
-        '<rect x="145" y="34" width="3" height="3" fill="#93C5FD"/>'
-        '<rect x="152" y="34" width="3" height="3" fill="#E2E8F0"/>'
-        '<rect x="163" y="34" width="15" height="15" fill="#64748B"/>'
-        # Impact flash on main apartment block
-        '<polygon points="52,13 55,19 62,18 57,23 61,27 54,26 52,31 50,25 44,25 48,21 46,16 50,18" fill="#DC2626"/>'
-        '<polygon points="52,17 54,20 57,20 55,22 57,25 53,24 52,26 51,23 48,23 50,21 49,19 51,20" fill="#FACC15"/>'
-        + _pill("p1", 108, 5, 72, 20, "#B91C1C", "9 KILLED", "#FFFFFF", 11.5, rx=2.5, stroke="#7F1D1D", stroke_w=0.8)
+        '<rect x="1" y="1" width="184" height="48" rx="2" fill="#DCEEF9"/>'
+        # Arabian Peninsula landmass
+        '<path d="M 10,1 L 88,1 L 106,12 L 122,30 L 112,44 L 84,49 L 34,49 L 20,34 L 10,16 Z" '
+        'fill="#EFC8A5" stroke="#B45309" stroke-width="1"/>'
+        f'<text x="53" y="21" text-anchor="middle" font-family="{FONT_SANS}" font-size="6.8" '
+        'font-weight="900" letter-spacing="0.35" fill="#78350F">SAUDI</text>'
+        f'<text x="48" y="45" text-anchor="middle" font-family="{FONT_SANS}" font-size="6.8" '
+        'font-weight="900" letter-spacing="0.35" fill="#9A3412">YEMEN</text>'
+        # Riyadh tower silhouette on fire (right-center, clear of top-right 11 HURT pill)
+        '<rect x="78" y="29" width="7" height="17" fill="#475569"/>'
+        '<polygon points="87,46 87,16 94,11 100,18 100,46" fill="#1E293B"/>'
+        '<rect x="90" y="22" width="2.8" height="3.2" fill="#93C5FD"/>'
+        '<rect x="94.5" y="22" width="2.8" height="3.2" fill="#FDE68A"/>'
+        '<rect x="90" y="30" width="2.8" height="3.2" fill="#FDE68A"/>'
+        '<rect x="102" y="31" width="7" height="15" fill="#334155"/>'
+        # Red dashed trajectory arc from Yemen to tower
+        '<path d="M 65,42 Q 74,24 91,19" fill="none" stroke="#DC2626" stroke-width="1.8" stroke-dasharray="3.2 2"/>'
+        '<circle cx="65" cy="42" r="2.2" fill="#B91C1C"/>'
+        # Fire burst on tower
+        '<polygon points="94,11 96,16 102,15 98,19 103,22 97,23 98,28 94,24 89,27 91,22 86,20 91,18 90,13 93,16" fill="#DC2626"/>'
+        '<polygon points="94,15 95.5,18 98.5,17.5 96.5,20 99,22 95.5,22 96,24.5 94,22.5 91.5,23.5 92.5,21 90,20 92.5,18.5 92,16 93.5,18" fill="#FACC15"/>'
+        + _pill("p1", 110, 5, 70, 20, "#991B1B", "11 HURT", "#FFFFFF", 11.4, rx=2.5, stroke="#450A0A", stroke_w=0.8)
     )
-    scenes[4] = _wrap_mid(4, card_regions[4], "#E2E8F0", "#94A3B8", body_4, "Ukraine strikes 9 killed")
+    scenes[4] = _wrap_mid(4, card_regions[4], "#DCEEF9", "#B45309", body_4, "Riyadh tower hit 11 hurt")
 
     # #5 Mid (186x50): Open-canvas sky-blue #DBEAFE + capsule + conical flask + top-right $41BN
     body_5 = (
@@ -227,21 +224,27 @@ def build_scenes() -> Dict[int, str]:
     )
     scenes[5] = _wrap_mid(5, card_regions[5], "#DBEAFE", "#60A5FA", body_5, "Sanofi $41bn buyout")
 
-    # #6 Mid (186x50): Full-width dark #0F172A chart with rising green arrow + red dashed dip + 50,018 & -1.5%
+    # #6 Mid (186x50): Pure bull green rally on left (x=10..95) + stacked DOW 50,018 & NASDAQ -1.5% on right
     body_6 = (
-        '<line x1="8" y1="15" x2="178" y2="15" stroke="#1E293B" stroke-width="0.8"/>'
-        '<line x1="8" y1="27" x2="178" y2="27" stroke="#1E293B" stroke-width="0.8"/>'
-        '<line x1="8" y1="39" x2="178" y2="39" stroke="#334155" stroke-width="1"/>'
-        # Green area fill & full-width rising Dow line
-        '<polygon points="10,43 32,37 54,39 78,24 102,28 134,14 166,8 166,44 10,44" fill="#22C55E" opacity="0.18"/>'
-        '<polyline points="10,43 32,37 54,39 78,24 102,28 134,14 166,8" fill="none" stroke="#4ADE80" '
-        'stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>'
-        '<polygon points="99,11 89,14 96,20" fill="#4ADE80"/>'
-        # Red dashed tech pullback line across width
-        '<polyline points="18,28 48,31 80,35 112,41 174,45" fill="none" stroke="#F87171" '
-        'stroke-width="1.7" stroke-dasharray="3.5 2"/>'
-        + _pill("p1", 108, 4, 72, 18, "#15803D", "50,018", "#FFFFFF", 10.6, rx=2.5)
-        + _pill("p2", 122, 25, 58, 16, "#B91C1C", "-1.5%", "#FFFFFF", 9.4, rx=2.2, y_text=36.2)
+        '<line x1="10" y1="16" x2="95" y2="16" stroke="#1E293B" stroke-width="0.8"/>'
+        '<line x1="10" y1="29" x2="95" y2="29" stroke="#1E293B" stroke-width="0.8"/>'
+        '<line x1="10" y1="43" x2="95" y2="43" stroke="#334155" stroke-width="1"/>'
+        # Ascending green vertical bars (dark-to-bright emerald #16A34A -> #4ADE80)
+        '<rect x="13" y="36" width="8" height="7" rx="1" fill="#16A34A" opacity="0.65"/>'
+        '<rect x="26" y="32" width="8" height="11" rx="1" fill="#16A34A" opacity="0.75"/>'
+        '<rect x="39" y="29" width="8" height="14" rx="1" fill="#22C55E" opacity="0.8"/>'
+        '<rect x="52" y="23" width="8" height="20" rx="1" fill="#22C55E" opacity="0.85"/>'
+        '<rect x="65" y="18" width="8" height="25" rx="1" fill="#4ADE80" opacity="0.88"/>'
+        '<rect x="78" y="12" width="8" height="31" rx="1" fill="#4ADE80" opacity="0.92"/>'
+        # Soft green area fill under pure bull rally line
+        '<polygon points="12,42 29,34 43,31 56,23 69,18 88,9 88,43 12,43" fill="#22C55E" opacity="0.22"/>'
+        # Crisp upward rally polyline + bright arrowhead + peak dot
+        '<polyline points="12,42 29,34 43,31 56,23 69,18 88,9" fill="none" stroke="#4ADE80" '
+        'stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>'
+        '<polygon points="94,6 83,7 89,14" fill="#4ADE80"/>'
+        '<circle cx="88" cy="9" r="2.8" fill="#BBF7D0"/>'
+        + _pill("p1", 100, 4, 80, 18, "#15803D", "DOW 50,018", "#FFFFFF", 9.6, rx=2.5, letter_spacing=0.15, font_weight=800)
+        + _pill("p2", 100, 25, 80, 17, "#B91C1C", "NASDAQ -1.5%", "#FFFFFF", 8.5, rx=2.5, letter_spacing=0.1, font_weight=800)
     )
     scenes[6] = _wrap_mid(6, card_regions[6], "#0F172A", "#334155", body_6, "Dow 50,018 Nasdaq -1.5%")
 
@@ -268,7 +271,7 @@ def build_scenes() -> Dict[int, str]:
         '<path d="M 51,15 C 51,7.5 55,5 55,5 C 55,5 59,7.5 59,15 L 59,34 L 51,34 Z" fill="#F8FAFC" stroke="#38BDF8" stroke-width="0.9"/>'
         '<rect x="51" y="15" width="8" height="3" fill="#0284C7"/>'
         '<circle cx="55" cy="23" r="1.8" fill="#0F172A"/>'
-        + _pill("p1", 106, 5, 74, 20, "#0F172A", "36 SATS", "#FACC15", 11.2, rx=2.5, stroke="#FACC15", stroke_w=1.1)
+        + _pill("p1", 106, 5, 74, 20, "#0F172A", "36 SATS", "#FACC15", 11.0, rx=2.5, stroke="#FACC15", stroke_w=1.1, letter_spacing=0.45, font_weight=800)
     )
     scenes[7] = _wrap_mid(7, card_regions[7], "#1E1B4B", "#4338CA", body_7, "Ariane 6 36 satellites launch")
 
@@ -366,7 +369,7 @@ def build_scenes() -> Dict[int, str]:
         '<line x1="122" y1="37" x2="119" y2="45"/>'
         '<line x1="134" y1="37" x2="131" y2="45"/>'
         '</g>'
-        + _pill("p1", 96, 5, 84, 20, "#831843", "20,000 FLEE", "#FFFFFF", 10.4, rx=2.5, stroke="#500724", stroke_w=0.8)
+        + _pill("p1", 104, 5, 76, 20, "#831843", "20K FLEE", "#FFFFFF", 11.2, rx=2.5, stroke="#500724", stroke_w=0.8)
     )
     scenes[12] = _wrap_mid(12, card_regions[12], "#FCE7F3", "#F472B6", body_12, "Brazil storm 20,000 displaced")
 

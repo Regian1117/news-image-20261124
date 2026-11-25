@@ -101,7 +101,7 @@ def render_card(card: CardItem, scenes: Dict[int, str], tier: str) -> str:
         f'  <div class="scene-wrap">{scenes[card.scene_id]}</div>'
         f'  <h2 class="headline">{style_headline(card.headline)}</h2>'
         f'  <p class="deck">{escape(card.deck)}</p>'
-        f'  <div class="card-src">{escape(card.sources)}</div>'
+        f'  <div class="card-src src-inline">{escape(card.sources)}</div>'
         f'</article>'
     )
 
@@ -127,9 +127,9 @@ def build_html() -> str:
     world_map_svg = build_world_map_svg(MAP_PINS)
 
     region_chips_html = "".join(
-        f'<div class="reg-chip r-chip" style="background:{r.color};">'
-        f'<span class="reg-name">{escape(r.label)}</span>'
-        f'<span class="reg-cnt">{counts[r.key]}</span>'
+        f'<div class="reg-chip" style="background:{r.color};">'
+        f'<span>{escape(r.label)}</span>'
+        f'<span>{counts[r.key]}</span>'
         f'</div>'
         for r in REGIONS
     )
@@ -165,9 +165,9 @@ def build_html() -> str:
     )
 
     legend_items = [
-        ("CONFIRMED", "2+ outlets"),
+        ("CONFIRMED", "verified"),
         ("OFFICIAL", "on record"),
-        ("REPORTED", "one outlet"),
+        ("REPORTED", "1 outlet"),
         ("CLAIM", "one side"),
         ("ONGOING", "unfolding"),
     ]
@@ -177,7 +177,7 @@ def build_html() -> str:
     )
 
     meta_right = (
-        f"{total} DATED STORIES · {len(REGIONS)} REGIONS · {FIELD_COUNT} FIELDS · ALL FROM {EDITION_DATE_SHORT}"
+        f"{total} DATED STORIES  ·  {len(REGIONS)} REGIONS  ·  {FIELD_COUNT} FIELDS  ·  TUE 24 NOV 2026"
     )
 
     return f"""<!DOCTYPE html>
@@ -205,7 +205,7 @@ def build_html() -> str:
     height: 1024px;
     overflow: hidden;
     background: #FAF8F3;
-    padding: 5px 11px;
+    padding: 4px 11px;
     display: flex;
     flex-direction: column;
     gap: 2.5px;
@@ -219,7 +219,7 @@ def build_html() -> str:
     flex-shrink: 0;
   }}
   .meta-bar {{
-    height: 16px;
+    height: 18px;
     background: #FAF8F3;
     border-bottom: 1.5px solid #0F172A;
     padding: 0 2px;
@@ -229,67 +229,63 @@ def build_html() -> str:
   }}
   .meta-left {{
     color: #991B1B;
-    font-size: 9.6px;
-    font-weight: 800;
+    font-size: 11.0px;
+    font-weight: 700;
     letter-spacing: 0.75px;
     text-transform: uppercase;
   }}
   .meta-right {{
     color: #1E293B;
-    font-size: 9.6px;
-    font-weight: 800;
-    letter-spacing: 0.25px;
+    font-size: 10.8px;
+    font-weight: 700;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.3px;
     text-transform: uppercase;
+    white-space: pre;
   }}
   .masthead {{
     text-align: center;
     font-family: Georgia, 'Times New Roman', serif;
-    font-size: 39px;
+    font-size: 41px;
     font-weight: 700;
-    line-height: 1.0;
+    line-height: 0.98;
     letter-spacing: -0.4px;
     color: #020617;
   }}
   .subhead {{
     text-align: center;
-    font-size: 11px;
-    font-weight: 800;
+    font-size: 12.1px;
+    font-weight: 700;
     color: #991B1B;
-    line-height: 1.14;
-    letter-spacing: -0.1px;
+    line-height: 1.2;
+    height: 16px;
+    letter-spacing: 0.1px;
     white-space: nowrap;
   }}
-  .region-strip {{
-    display: flex;
-    gap: 3px;
-    height: 18px;
+  .region-grid {{
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 3px 5px;
   }}
-  .r-chip {{
-    flex: 1;
+  .reg-chip {{
+    height: 15.5px;
     min-width: 0;
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 3px;
-    border-radius: 2px;
+    gap: 6px;
+    border-radius: 2.5px;
     color: #FFFFFF;
-    font-size: 9.2px;
-    font-weight: 900;
+    font-size: 10.8px;
+    font-weight: 800;
     font-variant-numeric: tabular-nums;
-    letter-spacing: -0.1px;
+    letter-spacing: 0.3px;
     white-space: nowrap;
-  }}
-  .reg-cnt {{
-    background: rgba(15, 23, 42, 0.28);
-    padding: 0.5px 3px;
-    border-radius: 2px;
-    font-weight: 900;
-    font-variant-numeric: tabular-nums;
   }}
 
   /* Light-Mode Chronological UTC Strip */
   .utc-strip {{
-    height: 19px;
+    height: 18px;
     background: #F3EFE6;
     border: 1px solid #D6CFC1;
     border-radius: 2px;
@@ -331,10 +327,10 @@ def build_html() -> str:
 
   /* High-Impact IN NUMBERS Bar */
   .numbers-bar {{
-    height: 31px;
+    height: 34px;
     background: #FFFFFF;
-    border: 1px solid #D6CFC1;
-    border-radius: 2px;
+    border: 1px solid #D1C9B8;
+    border-radius: 3px;
     display: flex;
     align-items: stretch;
     overflow: hidden;
@@ -371,26 +367,26 @@ def build_html() -> str:
     line-height: 1.02;
   }}
   .num-val {{
-    font-size: 14px;
-    font-weight: 900;
+    font-size: 16.0px;
+    font-weight: 800;
     color: #020617;
     font-variant-numeric: tabular-nums;
-    letter-spacing: -0.25px;
+    letter-spacing: 0.45px;
     white-space: nowrap;
   }}
   .num-lbl {{
-    font-size: 8.1px;
+    font-size: 8.8px;
     font-weight: 600;
-    color: #475569;
+    color: #334155;
     white-space: nowrap;
   }}
 
   /* Shared card styling */
   .card {{
     background: #FFFFFF;
-    border: 1px solid #D6CFC1;
+    border: 1px solid #D1C9B8;
     border-top-width: 3px;
-    border-radius: 2px;
+    border-radius: 4px;
     display: flex;
     flex-direction: column;
     overflow: hidden;
@@ -430,7 +426,7 @@ def build_html() -> str:
   }}
   .headline {{
     font-family: 'Segoe UI', Arial, Helvetica, sans-serif;
-    font-weight: 800;
+    font-weight: 700;
     color: #0F172A;
   }}
   .hl-num {{
@@ -447,7 +443,6 @@ def build_html() -> str:
     margin-top: auto;
     color: #64748B;
     font-weight: 600;
-    font-size: 8.4px;
     border-top: 1px solid #ECE7DC;
     padding-top: 1.5px;
     white-space: nowrap;
@@ -458,17 +453,17 @@ def build_html() -> str:
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 6px;
-    height: 212px;
+    height: 214px;
     flex-shrink: 0;
   }}
   .hero-card {{
     background: #FFFDF9;
     border-top-width: 3.5px;
-    padding: 3.5px 5px 3px 5px;
+    padding: 3.5px 5.5px 4px 5.5px;
   }}
   .hero-card .card-meta {{
     height: 14px;
-    margin-bottom: 2.5px;
+    margin-bottom: 2px;
   }}
   .hero-card .kicker {{
     font-size: 8.8px;
@@ -478,21 +473,24 @@ def build_html() -> str:
     padding: 1px 4px;
   }}
   .hero-card .scene-wrap {{
-    margin-bottom: 3.5px;
+    margin-bottom: 3px;
   }}
   .hero-svg {{
-    height: 84px;
+    height: 90px;
   }}
   .hero-card .headline {{
-    font-size: 17.4px;
-    font-weight: 800;
-    line-height: 1.1;
+    font-size: 18.0px;
+    font-weight: 700;
+    line-height: 1.08;
     letter-spacing: -0.15px;
-    margin-bottom: 3px;
+    margin-bottom: 2.5px;
   }}
   .hero-card .deck {{
     font-size: 10.3px;
-    line-height: 1.19;
+    line-height: 1.15;
+  }}
+  .hero-card .src-inline {{
+    font-size: 9.2px;
   }}
 
   /* Middle Tier — 10 Sleek Open-Canvas Mid Cards (5x2 grid) */
@@ -501,16 +499,16 @@ def build_html() -> str:
     grid-template-columns: repeat(5, 1fr);
     grid-template-rows: repeat(2, 1fr);
     gap: 5px;
-    height: 306px;
+    height: 290px;
     flex-shrink: 0;
   }}
   .mid-card {{
     background: #FFFFFF;
-    padding: 2.5px 4px 2.5px 4px;
+    padding: 2.5px 4.5px 3px 4.5px;
   }}
   .mid-card .card-meta {{
     height: 13px;
-    margin-bottom: 2px;
+    margin-bottom: 1.5px;
   }}
   .mid-card .kicker {{
     font-size: 7.6px;
@@ -521,21 +519,24 @@ def build_html() -> str:
     padding: 0.8px 3px;
   }}
   .mid-card .scene-wrap {{
-    margin-bottom: 2.5px;
+    margin-bottom: 2px;
   }}
   .mid-svg {{
     height: 50px;
   }}
   .mid-card .headline {{
-    font-size: 12.7px;
-    font-weight: 800;
-    line-height: 1.12;
+    font-size: 13.0px;
+    font-weight: 700;
+    line-height: 1.08;
     letter-spacing: -0.15px;
-    margin-bottom: 2px;
+    margin-bottom: 1.5px;
   }}
   .mid-card .deck {{
-    font-size: 9.2px;
-    line-height: 1.15;
+    font-size: 9.25px;
+    line-height: 1.12;
+  }}
+  .mid-card .src-inline {{
+    font-size: 8.4px;
   }}
 
   /* Lower Tier — 25 Briefs + World Locator Map */
@@ -548,9 +549,9 @@ def build_html() -> str:
   }}
   .panel-box {{
     background: #FFFFFF;
-    border: 1px solid #D6CFC1;
+    border: 1px solid #D1C9B8;
     border-top: 2.5px solid #0F172A;
-    border-radius: 2px;
+    border-radius: 4px;
     padding: 4px 6px;
     display: flex;
     flex-direction: column;
@@ -590,7 +591,7 @@ def build_html() -> str:
   .b-col {{
     display: flex;
     flex-direction: column;
-    gap: 1.8px;
+    gap: 1.3px;
     min-width: 0;
   }}
   .b-col:not(:first-child) {{
@@ -600,12 +601,12 @@ def build_html() -> str:
   .b-row {{
     display: flex;
     align-items: center;
-    gap: 4px;
+    gap: 3.5px;
     height: 18px;
-    line-height: 1.3;
+    line-height: 1.25;
     font-style: normal;
-    font-size: 9.85px;
-    letter-spacing: -0.1px;
+    font-size: 10.3px;
+    letter-spacing: 0px;
     white-space: nowrap;
     overflow: hidden;
     border-bottom: 1px dotted #EAE5DA;
@@ -629,6 +630,7 @@ def build_html() -> str:
   }}
   .b-text {{
     color: #0F172A;
+    font-weight: 500;
     font-style: normal;
     white-space: nowrap;
     flex: 1;
@@ -646,10 +648,10 @@ def build_html() -> str:
     color: #020617;
   }}
   .b-src {{
-    font-size: 8.8px;
-    font-weight: 600;
+    font-size: 9.25px;
+    font-weight: 700;
     font-style: normal;
-    color: #475569;
+    color: #020617;
   }}
   .b-tag {{
     display: inline-flex;
@@ -800,7 +802,7 @@ def build_html() -> str:
     </div>
     <h1 class="masthead">{escape(EDITION_DATE)}</h1>
     <div class="subhead">{escape(SUBHEAD)}</div>
-    <div class="region-strip">{region_chips_html}</div>
+    <div class="region-grid">{region_chips_html}</div>
     <div class="utc-strip">
       <span class="utc-badge">UTC</span>
       <div class="tl-items">{timeline_html}</div>
@@ -824,7 +826,7 @@ def build_html() -> str:
     <div class="panel-box briefs-panel">
       <div class="panel-hdr">
         <span class="panel-title">ALSO ON TUESDAY 24 NOVEMBER · 25 MORE STORIES</span>
-        <span class="panel-sub">C 2+ · O official · R wire · CL claim · ON ongoing</span>
+        <span class="panel-sub">C verified · O official · R 1 outlet · CL claim · ON ongoing</span>
       </div>
       <div class="briefs-cols">
         {briefs_cols_html}
@@ -896,7 +898,7 @@ DOM_AUDIT_JS = """() => {
     errs.push(`Subhead overflow: scrollW=${subhead.scrollWidth} > clientW=${subhead.clientWidth}`);
   }
 
-  document.querySelectorAll('.reg-chip').forEach((chip, idx) => {
+  document.querySelectorAll('.region-grid .reg-chip').forEach((chip, idx) => {
     if (chip.scrollWidth > chip.clientWidth + 0.5) {
       errs.push(`Region chip #${idx + 1} overflow: ${chip.textContent.trim()}`);
     }
@@ -923,6 +925,17 @@ DOM_AUDIT_JS = """() => {
 
   document.querySelectorAll('svg.scene-svg').forEach((svg, idx) => {
     const vb = svg.viewBox.baseVal;
+    const pin = svg.querySelector('.card-pin');
+    const pinBox = pin ? pin.getBBox() : null;
+    if (pinBox) {
+      svg.querySelectorAll('rect.callout-pill').forEach((pill) => {
+        const pb = pill.getBBox();
+        const overlap = !(pb.x + pb.width < pinBox.x || pinBox.x + pinBox.width < pb.x || pb.y + pb.height < pinBox.y || pinBox.y + pinBox.height < pb.y);
+        if (overlap) {
+          errs.push(`SVG #${idx + 1} callout pill overlaps corner pin`);
+        }
+      });
+    }
     svg.querySelectorAll('text').forEach((txt) => {
       const tb = txt.getBBox();
       if (tb.x < vb.x || tb.y < vb.y || (tb.x + tb.width) > (vb.x + vb.width) || (tb.y + tb.height) > (vb.y + vb.height)) {
